@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Page
+			{% endblock %}
+		</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="shortcut icon" href="">
+		<script src="https://cdn.tailwindcss.com"></script>
+		<!-- Alpine Collasp Plugins -->
+		<script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+
+		<!-- Alpine Core -->
+		<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+		<script>
+			tailwind.config = {
+theme: {
+extend: {
+colors: {
+clifford: '#da373d'
+}
+}
+}
+}
+		</script>
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+		<header class="container max-w-full bg-black ">
+			<button id="buttonMenuBurger" class="grid grid-cols-1 gap-0 w-auto mr-5 absolute mt-0 ml-0 bg-black">
+				<i class="fa fa-bars relative mx-auto text-2xl text-white" aria-hidden="true"></i>
+			</button>
+			<div class="" style='background-color:rgb(235, 235, 235);'>
+				<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 w-[100%]">
+					<div id="toolsBar" class="relative flex items-center justify-between h-[90px]">
+						<div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+							<div class="flex-shrink-0 flex items-center">
+								<a href="{{ path('app_home') }}"><img class="hidden lg:block h-[90px] w-auto" src="https://via.placeholder.com/200x90.png?text=Logo" alt="Workflow"></a>
+							</div>
+						</div>
+						<div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 h-[100%]">
+							<div id="searchbar" class="pt-2 relative mx-auto text-gray-600 mr-6">
+								<input id="valueSearchBar" class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none" type="search" name="search" placeholder="Nom du produit?">
+								<button id="buttonSearchBar" type="submit" class="absolute right-0 top-0 mt-5 mr-4">
+									<svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewbox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
+										<path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z"/>
+									</svg>
+								</button>
+							</div>
+							<a id="search" href="" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+								<i class="fa fa-search relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+								<p class="mx-auto">Recherche</p>
+							</a>
+							{% block connexion %}{% endblock %}
+							{% block menu %}{% endblock %}
+							<a href="{{ path('panier') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+								<i class="fa fa-shopping-cart relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+								<p class="mx-auto">Panier</p>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="searchBarMobile" class="drop-shadow-md bg-white w-[100%] flex items-center">
+				<div class="pt-2 relative mx-auto text-gray-600 mt-3 py-6">
+					<input id="valueSearchBar1" class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 w-[100%] rounded-lg text-sm focus:outline-none" type="search" name="search" placeholder="Nom du produit?">
+					<button id="buttonSearchBar1" type="submit" class="absolute right-0 top-0 mt-5 mr-4">
+						<svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewbox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
+							<path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z"/>
+						</svg>
+					</button>
+				</div>
+			</div>
+
+			<nav id="nav" class="container min-w-full">
+				<div id="navLink" class="drop-shadow-md bg-white w-[100%] space-x-2 flex justify-center">
+					<a href="{{ path('categorie', {'categorie': 1 }) }}" id="audio" class="fromLeft uppercase p-4">Audio</a>
+					<a href="{{ path('categorie', {'categorie': 2 }) }}" id="eclairage" class="fromLeft uppercase p-4">Eclairage</a>
+					<a href="{{ path('categorie', {'categorie': 3 }) }}" id="video" class="fromLeft uppercase p-4">Vidéo</a>
+					<a href="{{ path('categorie', {'categorie': 4 }) }}" id="mobilier" class="fromLeft uppercase p-4">Mobilier</a>
+					<a href="{{ path('categorie', {'categorie': 5 }) }}" id="structure" class="fromLeft uppercase p-4">Autres</a>
+					<a href="{{ path('categorie', {'categorie': 6 }) }}" id="packs" class="fromLeft uppercase p-4">Packs</a>
+				</div>
+				<div id="dropmenu" class="drop-shadow-md bg-white grid grid-cols-11 gap-4 h-auto w-[100%]" style=""></div>
+			</nav>
+		</div></header><section id="content" class="container mx-auto"> {% block body %}{% endblock %}
+</section>
+<!--
+<div style="height:396px;">
+	<div style="display: flex;
+        position:relative;
+			  justify-content: center;
+			  align-items: center;width:100%;height:100%;">
+    <div style="display: flex;
+        position:relative;
+			  justify-content: center;background-image:url('https://cdn.pixabay.com/photo/2015/05/07/11/02/guitar-756326_1280.jpg');background-position: center;-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;position:absolute;top:0;left:0;width:65%;height:100%;">
+    <h1 style="text-transform: uppercase;
+    font-weight: bold; color:black;font-size:2rem;" class="mt-[15px]">Achat  -  Location  -  Occassion</h1>
+    </div>
+		<div style="background-color:rgb(243,203,55);position:absolute;top:0;right:0;width:35%;height:100%;">
+    </div>
+	</div>
+</div>-->
+<footer class="border-t border-gray-200 drop-shadow-md bg-white">
+	<div class="
+						          container
+						          flex flex-col flex-wrap
+						          px-4
+						          py-16
+						          mx-auto
+						          md:items-center
+						          lg:items-start
+						          md:flex-row md:flex-nowrap
+						        ">
+		<div class="justify-between w-full mt-4 text-center lg:flex">
+			<div class="w-full px-4 lg:w-1/3 md:v-1/2">
+				<a href="" class="
+												              flex
+												              items-center
+												              justify-center
+												              text-4xl
+												              font-bold
+												              text-blue-700
+												              md:justify-start1
+												            ">
+					Logo
+				</a>
+				<ul class="mb-8 space-y-2 text-sm list-none">
+					<li></li>
+					<li>
+						<a class="text-gray-900 hover:text-blue-900">Addresses</a>
+					</li>
+					<li>
+						<a class="text-gray-900 hover:text-blue-900">Horaires</a>
+					</li>
+					<li>
+						<a class="text-gray-900 hover:text-blue-900">InfosContacts</a>
+					</li>
+				</ul>
+			</div>
+			<div class="w-full px-4 lg:w-1/3 md:v-1/2">
+				<h2 class="mb-2 font-bold tracking-widest text-gray-900">
+					Nos produits
+				</h2>
+				<ul class="mb-8 space-y-2 text-sm list-none">
+					<li>
+						<a href="{{ path('categorie',{categorie: 1}) }}" class="text-gray-900 hover:text-blue-900">Audio</a>
+					</li>
+					<li>
+						<a href="{{ path('categorie',{categorie: 2}) }}" class="text-gray-900 hover:text-blue-900">Eclairage</a> </li> 
+					</li>
+					<li> 
+						<a href="{{ path('categorie',{categorie: 3}) }}" class="text-gray-900 hover:text-blue-900" >Vidéo </a>
+					</li>
+					<li>
+						<a href="{{ path('categorie',{categorie: 4}) }}" class="text-gray-900 hover:text-blue-900">Mobilier</a>
+					</li>
+					<li>
+						<a href="{{ path('categorie',{categorie: 5}) }}" class="text-gray-900 hover:text-blue-900">Autres</a>
+					</li>
+					<li>
+						<a href="{{ path('categorie',{categorie: 6}) }}" class="text-gray-900 hover:text-blue-900">Packs</a>
+					</li>
+				</ul>
+			</div>
+			<div class="w-full px-4 lg:w-1/3 md:v-1/2">
+				<h2 class="mb-2 font-bold tracking-widest text-gray-900">
+					Informations
+				</h2>
+				<ul class="mb-8 space-y-2 text-sm list-none">
+					<li>
+						<a href="{{ path('contact') }}" class="text-gray-900 hover:text-blue-900">Contactez-nous</a>
+					</li>
+					<li>
+						<a href="" class="text-gray-900 hover:text-blue-900">A propos</a>
+					</li>
+					<li>
+						<a href="{{ path('cgv') }}" class="text-gray-900 hover:text-blue-900">Mentions légales</a>
+					</li>
+					<li>
+						<a href="{{ path('cgu') }}" class="text-gray-900 hover:text-blue-900">Politique de confidentialité</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="flex justify-center bg-black">
+		<p class="text-base text-white text-center">
+			&copy; Copyright by spireight |
+			<a href="{{ path('cgv') }}" class="text-blue-400">Conditions générales de ventes</a>
+			|
+			<a href="{{ path('cgu') }}" class="text-blue-400" style=";">Conditions générales d’utilisation</a>.
+		</p>
+	</div>
+</footer>
+{% block javascripts %}{% endblock %}</body></html>

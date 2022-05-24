@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de passe oublier
+{% endblock %}
+
+{% block connexion %}
+  {% if statusConnexion == true %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Connexion</p>
+		</a>
+  {% else %}
+    <a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Compte</p>
+		</a>
+  {% endif %}
+{% endblock %}
+
+{% block menu %}<script>var menuArray = JSON.parse({{menuJs|json_encode()|raw}})</script>{% endblock %}
+
+{% block body %}
+<main>
+        <h1 class="title mt-[80px] mb-10">Mot de passe oulier</h1>
+        <p class="text-left mx-[20px]"><a href="{{ path('app_home') }}">Accueil</a> > <a href="{{ path('connexion') }}">Connexion</a> > <a href="{{ path('oublier') }}">Mot de passe oublier</a></p>
+		<!-- Container -->
+		<div class="container mx-auto drop-shadow-2xl mt-[40px]">
+			<form class="px-8 pt-6 pb-8 mb-4 bg-white rounded" method="POST" action="{{ path('oublier') }}" id="formulaire">
+							<div class="mb-4">
+								<label class="block mb-4 text-sm font-bold text-gray-700" for="email">
+									Veuillez entrer votre Email.
+								</label>
+								<input
+									class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+									id="email"
+									type="email"
+                                    name="email"
+									placeholder="Email"
+								/>
+							</div>
+                            
+                            <div class="mb-6 text-center">
+								<button
+									class="w-auto px-6 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+									type="submit" name="envoie" id="envoie"
+								>
+									Envoyer
+								</button>
+							</div>
+						</form>
+		</div>
+</main>
+{% endblock %}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('nav') }}
+{% endblock %}

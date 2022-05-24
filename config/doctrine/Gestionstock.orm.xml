@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="App\Entity\Gestionstock" table="gestionstock">
+    <indexes>
+      <index name="stock" columns="id_produit"/>
+      <index name="type" columns="id_type"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="quantite" type="integer" column="quantite" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="prix" type="float" column="prix" precision="10" scale="0" nullable="false"/>
+    <many-to-one field="idType" target-entity="Type" fetch="LAZY">
+      <join-columns>
+        <join-column name="id_type" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idProduit" target-entity="Produit" fetch="LAZY">
+      <join-columns>
+        <join-column name="id_produit" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

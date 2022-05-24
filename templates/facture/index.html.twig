@@ -1,0 +1,205 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Devis
+{% endblock %}
+
+{% block connexion %}
+	{% if statusConnexion == true %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Connexion</p>
+		</a>
+	{% else %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Compte</p>
+		</a>
+	{% endif %}
+{% endblock %}
+
+{% block menu %}
+	<script>
+		var menuArray = JSON.parse({{ menuJs|json_encode()|raw }})
+	</script>
+{% endblock %}
+
+{% block body %}
+	<main class="relative">
+		<h1 class="title mt-[80px] mb-10">Devis</h1>
+		<p class="text-left mx-[20px]">
+			<a href="{{ path('app_home') }}">Accueil</a>
+			>
+			<a href="{{ path('connexion') }}">Compte</a>
+			>
+			<a href="{{ path('list_devis') }}">Liste des devis</a>
+			>
+			<a href="#">Devis</a>
+		</p>
+        <h1 class="text-left ml-[10px] mt-[100px]">8 Rue de l'artisanat</h1>
+        <h1 class="text-left ml-[10px]">08000 Charleville-Mézières</h1>
+        <h1 class="text-left ml-[10px]">Tél portable : 0767440511</h1>
+        <h1 class="text-left ml-[10px]">Email : contact@pixel4d.fr</h1>
+        <h1 class="absolute right-7  border border-black p-5 px-8 bg-gray-300 mb-20">DEVIS</h1>
+		<div class="w-[70%] mb-1 mt-[150px]">
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6 bg-gray-300 border border-black">
+				<div class="col-start-1 col-end-3 w-full m-auto pt-4 pb-4 border-r border-black">
+					<h1>Numéro</h1>
+				</div>
+				<div class="col-start-3 col-end-5 w-full m-auto pt-4 pb-4 border-r border-black">
+					<h1>Date</h1>
+				</div>
+				<div class="col-start-5 col-end-7 w-full m-auto pt-4 pb-4 border-r border-black">
+					<h1>Id client</h1>
+				</div>
+				<div class="col-start-7 col-end-9 w-full m-auto pt-4 pb-4 border-r border-black">
+					<h1>Date d'échéance</h1>
+				</div>
+				<div class="col-start-9 col-end-12 w-full m-auto pt-4 pb-4">
+					<h1>Mode de règlement</h1>
+				</div>
+			</div>
+			{% set cost = 0 %}
+			{% set dayMore = '+' ~ 0 ~ "day" %}
+			{% set code = "" %}
+			{% set caution = 0 %}
+			{% for devi in devis %}
+				{% if devi.nomType == "Location" %}
+					{% set caution = caution + (devi.caution * devi.quantite * devi.jour)  %}
+				{% endif %}
+				{% set code = code ~ devi.Commande ~ "" %}
+				{% if devi.jour > cost %}
+					{% set cost = devi.jour %}
+					{% set dayMore = '+' ~ devi.jour ~ " day" %}
+				{% endif %}
+			{% endfor %}
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 border-r border-l border-b border-black mb-[100px]">
+				<div class="col-start-1 col-end-3 w-full m-auto pt-4 pb-4 border-r border-black">
+					<h1>{{ code }}</h1>
+				</div>
+				<div class="col-start-3 col-end-5 w-full m-auto pt-4 pb-4 border-r border-black">
+					<h1>{{ devis[0].date|date('Y-m-d') }}</h1>
+				</div>
+				<div class="col-start-5 col-end-7 w-full m-auto pt-4 pb-4 border-r border-black">
+					<h1>{{ devis[0].UserId }}</h1>
+				</div>
+				<div class="col-start-7 col-end-9 w-full m-auto pt-4 pb-4 border-r border-black">
+					<h1>{{ devis[0].date|date_modify(dayMore)|date('Y-m-d')}}</h1>
+				</div>
+				<div class="col-start-9 col-end-12 w-full m-auto pt-4 pb-4">
+					<h1>CB</h1>
+				</div>
+			</div>
+		</div>
+		<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6 bg-gray-300 border border-black">
+			<div class="col-start-1 col-end-3 w-full m-auto pt-4 pb-4 border-r border-black">
+				<h1>Code</h1>
+			</div>
+			<div class="col-start-3 col-end-8 w-full m-auto pt-4 pb-4 border-r border-black">
+				<h1>Description</h1>
+			</div>
+			<div class="col-start-8 col-end-9 w-full m-auto pt-4 pb-4 border-r border-black">
+				<h1>Qté (* jours)</h1>
+			</div>
+			<div class="col-start-9 col-end-10 w-full m-auto pt-4 pb-4 border-r border-black">
+				<h1>P.U. HT</h1>
+			</div>
+			<div class="col-start-10 col-end-12 w-full m-auto pt-4 pb-4">
+				<h1>Montant HT</h1>
+			</div>
+		</div>
+		{% set MontantTotHt = 0 %}
+		{% for devi in devis %}
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 border-l border-r border-b border-black">
+				<div class="col-start-1 col-end-3 w-full m-auto pt-4 pb-4 border-r border-black">
+					<h1>{{devi.nom}}</h1>
+				</div>
+				<div class="col-start-3 col-end-8 w-full m-auto pt-4 pb-4 border-r border-black">
+					<h1>{{devi.description}}</h1>
+				</div>
+				{% if devi.jour == 0 %}
+					<div class="col-start-8 col-end-9 w-full m-auto pt-4 pb-4 border-r border-black">
+						<h1>{{devi.quantite}}</h1>
+					</div>
+				{% else %}
+					<div class="col-start-8 col-end-9 w-full m-auto pt-4 pb-4 border-r border-black">
+						<h1>{{devi.quantite}} * {{devi.jour}}</h1>
+					</div>
+				{% endif %}
+				<div class="col-start-9 col-end-10 w-full m-auto pt-4 pb-4 border-r border-black">
+					<h1>{{devi.prix}} €</h1>
+				</div>
+				{% if devi.jour == 0 %}
+					<div class="col-start-10 col-end-12 w-full m-auto pt-4 pb-4 border-r border-black">
+						<h1>{{devi.quantite + devi.prix}}</h1>
+					</div>
+				{% else %}
+					<div class="col-start-10 col-end-12 w-full m-auto pt-4 pb-4">
+						<h1>{{devi.prix * devi.quantite * devi.jour}}</h1>
+						{% set MontantTotHt = MontantTotHt + devi.prix * devi.quantite * devi.jour %}
+					</div>
+				{% endif %}
+			</div>		
+		{% endfor %}
+		<div class="w-full flex items-start relative mt-[100px] mb-[400px]">
+			<div class="w-[40%] inline-block">
+				<div class="grid gap-3 grid-cols-3 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 mt-6 bg-gray-300 border border-black">
+					<div class="col-start-1 col-end-2 w-full m-auto pt-4 pb-4 border-r border-black">
+						<h1>Taux</h1>
+					</div>
+					<div class="col-start-2 col-end-3 w-full m-auto pt-4 pb-4 border-r border-black">
+						<h1>Base HT</h1>
+					</div>
+					<div class="col-start-3 col-end-4 w-full m-auto pt-4 pb-4">
+						<h1>Montant TVA</h1>
+					</div>
+				</div>
+				<div class="grid gap-3 grid-cols-3 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 border-l border-b border-r border-black">
+					<div class="col-start-1 col-end-2 w-full m-auto pt-4 pb-4 border-r border-black">
+						<h1>20</h1>
+					</div>
+					<div class="col-start-2 col-end-3 w-full m-auto pt-4 pb-4 border-r border-black">
+						<h1>{{MontantTotHt}} €</h1>
+					</div>
+					<div class="col-start-3 col-end-4 w-full m-auto pt-4 pb-4">
+						<h1>{{MontantTotHt * 1.20}} €</h1>
+					</div>
+				</div>
+			</div>
+			<div class="w-[40%] inline-block absolute inset-y-0 right-0">
+				<div class="grid gap-0 grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 mt-6 border border-black">
+					<div class="col-start-1 col-end-2 w-full m-auto pt-4 pb-4 bg-gray-300 text-left border-r border-black">
+						<h1 class="ml-[7px]">Total HT</h1>
+					</div>
+					<div class="col-start-2 col-end-3 w-full text-right m-auto">
+						<h1 class="mr-[7px]">{{MontantTotHt}} €</h1>
+					</div>
+					<div class="col-start-1 col-end-2 w-full m-auto pt-4 pb-4 bg-gray-300 text-left border-r border-black">
+						<h1 class="ml-[7px]">Total TVA</h1>
+					</div>
+					<div class="col-start-2 col-end-3 w-full text-right m-auto">
+						<h1 class="mr-[7px]">{{MontantTotHt * 0.20}} €</h1>
+					</div>
+					<div class="col-start-1 col-end-2 w-full m-auto pt-4 pb-4 bg-gray-300 text-left border-r border-black">
+						<h1 class="ml-[7px]">Total TTC</h1>
+					</div>
+					<div class="col-start-2 col-end-3 w-full text-right m-auto">
+						<h1 class="mr-[7px]">{{MontantTotHt * 1.20}} €</h1>
+					</div>
+					{% if caution != 0 %}
+						<div class="col-start-1 col-end-2 w-full m-auto pt-4 pb-4 bg-gray-300 text-left border-r border-black">
+							<h1 class="ml-[7px]">Caution</h1>
+						</div>
+						<div class="col-start-2 col-end-3 w-full text-right m-auto">
+							<h1 class="mr-[7px]">{{caution}} €</h1>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+        <p>Ce document est à titre informatif.</p>
+	</main>
+{% endblock %}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('nav') }}
+{% endblock %}

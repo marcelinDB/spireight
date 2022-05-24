@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Gestion
+{% endblock %}
+
+{% block connexion %}
+	{% if statusConnexion == true %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Connexion</p>
+		</a>
+	{% else %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Compte</p>
+		</a>
+	{% endif %}
+{% endblock %}
+
+{% block menu %}
+	<script>
+		var menuArray = JSON.parse({{ menuJs|json_encode()|raw }})
+	</script>
+{% endblock %}
+
+{% block body %}
+	<main>
+		<script>var produit = JSON.parse({{product|json_encode()|raw}}) </script>
+		<h1 class="title mt-[80px] mb-10">Liste des Produits</h1>
+		<p class="text-left  mx-[20px]">
+			<a href="{{ path('app_home') }}">Accueil</a>
+			>
+			<a href="{{ path('profil') }}">Compte</a>
+			>
+			<a href="{{ path('liste_gestion') }}">Liste des Produits</a>
+		</p>
+        <div class="w-full text-left mt-[40px]">
+			<a href="{{ path('gestion_produit') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 border border-gray-400 rounded shadow">Ajouter un Produit</a>
+			</div>
+		<div class="col-span-1 w-full mx-auto border mt-[20px]" id="product">
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 bg-gray-600 h-[40px] text-white">
+				<div class="col-start-1 col-end-5 w-full m-auto">
+					<h1 class="">Image</h1>
+				</div>
+				<div class="col-start-5 col-end-8 w-full m-auto">
+					<h1 class="">Nom</h1>
+				</div>
+				<div class="col-start-8 col-end-10 w-full m-auto hover:text-red-400 cursor-pointer select-none" id="boutonCategorie">
+					<h1 class="">Categorie</h1>
+				</div>
+				<div class="col-start-10 col-end-12 w-full m-auto">
+					<h1 class="">Redirection</h1>
+				</div>
+			</div>
+			<div class="w-full" id="produit">
+			</div>
+		</div>
+	</main>
+{% endblock %}
+{% block javascripts %}
+	{{ encore_entry_script_tags('nav') }}
+	{{ encore_entry_script_tags('listgestion') }}
+{% endblock %}

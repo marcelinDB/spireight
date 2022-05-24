@@ -1,0 +1,242 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Boutique
+{% endblock %}
+
+{% block connexion %}
+  {% if statusConnexion == true %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Connexion</p>
+		</a>
+  {% else %}
+    <a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Compte</p>
+		</a>
+  {% endif %}
+{% endblock %}
+
+{% block menu %}<script>var menuArray = JSON.parse({{menuJs|json_encode()|raw}})</script>{% endblock %}
+
+{% block body %}
+	<main>
+		<script>
+			let boutique = JSON.parse({{boutique|json_encode()|raw}})
+		</script>
+		<h1 class="title mt-[80px] mb-10">Boutique</h1>
+        <p class="text-left mx-[20px]"><a href="{{ path('app_home') }}">Accueil</a></p>
+		<div class="grid gap-4 grid-cols-5 sm:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 mt-6">
+			<div class="col-span-1 w-full mx-auto border">
+				<div class="bg-gray-600 w-100 h-[40px] text-white text-left flex">
+					<h1 class="ml-[15px] m-auto">Filtre:</h1>
+				</div>
+				<!--start-->
+				
+				<div class="max-w-2xl" x-data="{
+					            faqOne: false,
+					            faqTwo: false,
+					            faqThree: false,
+								faqFour: false,
+                                faqFive: false,
+					            activeClass: 'bg-blue-700 focus:outline-none',
+					        }" class="p-6 mx-auto bg-white">
+					<div class="mt-6">
+						<div @click="faqOne = ! faqOne" :class="faqOne === true ? activeClass : ''" class="flex items-center justify-between w-full py-3 pl-3 pr-2 font-bold text-indigo-100 bg-blue-500 rounded cursor-pointer hover:text-indigo-100">
+							Acquisition
+							<span class="flex items-center justify-center w-6 h-6">
+								<svg :class="faqOne === true ? 'block' : 'hidden'" class="w-3 h-3 fill-current" viewbox="0 -192 469.33333 469" xmlns="http://www.w3.org/2000/svg">
+									<path d="m437.332031.167969h-405.332031c-17.664062 0-32 14.335937-32 32v21.332031c0 17.664062 14.335938 32 32 32h405.332031c17.664063 0 32-14.335938 32-32v-21.332031c0-17.664063-14.335937-32-32-32zm0 0"/>
+								</svg>
+								<svg :class="faqOne === false ? 'block' : 'hidden'" class="w-3 h-3 fill-current" viewbox="0 0 469.33333 469.33333" xmlns="http://www.w3.org/2000/svg">
+									<path d="m437.332031 192h-160v-160c0-17.664062-14.335937-32-32-32h-21.332031c-17.664062 0-32 14.335938-32 32v160h-160c-17.664062 0-32 14.335938-32 32v21.332031c0 17.664063 14.335938 32 32 32h160v160c0 17.664063 14.335938 32 32 32h21.332031c17.664063 0 32-14.335937 32-32v-160h160c17.664063 0 32-14.335937 32-32v-21.332031c0-17.664062-14.335937-32-32-32zm0 0"/>
+								</span>
+							</div>
+							<div x-show="faqOne" x-collapse>
+								<div class="flex justify-center">
+                                        <div>
+                                            <div class="form-check mt-[8px]">
+                                            <input id="achat" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="">
+                                            <label class="form-check-label inline-block text-gray-800" for="achat">
+                                               Achat
+                                            </label>
+                                            </div>
+                                            <div class="form-check">
+                                            <input id="location" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="">
+                                            <label class="form-check-label inline-block text-gray-800" for="location">
+                                               Location
+                                            </label>
+                                            </div>
+                                            <div class="form-check mb-[8px]">
+                                            <input id="occassion" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="">
+                                            <label class="form-check-label inline-block text-gray-800" for="occassion">
+                                               Occassion
+                                            </label>
+                                            </div>
+                                        </div>
+                                    </div>
+							</div>
+						</div>
+                        <div class="mt-1">
+							<div @click="faqTwo = ! faqTwo" :class="faqTwo === true ? activeClass : ''" class="flex items-center justify-between w-full py-3 pl-3 pr-2 font-bold text-indigo-100 bg-blue-500 rounded cursor-pointer hover:text-indigo-100">
+								Disponibilité
+								<span class="flex items-center justify-center w-6 h-6">
+									<svg :class="faqTwo === true ? 'block' : 'hidden'" class="w-3 h-3 fill-current" viewbox="0 -192 469.33333 469" xmlns="http://www.w3.org/2000/svg">
+										<path d="m437.332031.167969h-405.332031c-17.664062 0-32 14.335937-32 32v21.332031c0 17.664062 14.335938 32 32 32h405.332031c17.664063 0 32-14.335938 32-32v-21.332031c0-17.664063-14.335937-32-32-32zm0 0"/>
+									</svg>
+									<svg :class="faqTwo === false ? 'block' : 'hidden'" class="w-3 h-3 fill-current" viewbox="0 0 469.33333 469.33333" xmlns="http://www.w3.org/2000/svg">
+										<path d="m437.332031 192h-160v-160c0-17.664062-14.335937-32-32-32h-21.332031c-17.664062 0-32 14.335938-32 32v160h-160c-17.664062 0-32 14.335938-32 32v21.332031c0 17.664063 14.335938 32 32 32h160v160c0 17.664063 14.335938 32 32 32h21.332031c17.664063 0 32-14.335937 32-32v-160h160c17.664063 0 32-14.335937 32-32v-21.332031c0-17.664062-14.335937-32-32-32zm0 0"/>
+									</span>
+								</div>
+								<div x-show="faqTwo" x-collapse.duration.500ms>
+									<div class="flex justify-center">
+                                        <div>
+                                            <div class="form-check mt-[8px]">
+                                            <input id="unvailable" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="">
+                                            <label class="form-check-label inline-block text-gray-800" for="unvailable">
+                                                Rupture
+                                            </label>
+                                            </div>
+                                            <div class="form-check mb-[8px]">
+                                            <input id="available" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="">
+                                            <label class="form-check-label inline-block text-gray-800" for="available">
+                                                Disponible
+                                            </label>
+                                            </div>
+                                        </div>
+                                    </div>
+								</div>
+							</div>
+                        
+						<div class="mt-1">
+							<div @click="faqThree = ! faqThree" :class="faqThree === true ? activeClass : ''" class="flex items-center justify-between w-full py-3 pl-3 pr-2 font-bold text-indigo-100 bg-blue-500 rounded cursor-pointer hover:text-indigo-100">
+								Prix
+								<span class="flex items-center justify-center w-6 h-6">
+									<svg :class="faqThree === true ? 'block' : 'hidden'" class="w-3 h-3 fill-current" viewbox="0 -192 469.33333 469" xmlns="http://www.w3.org/2000/svg">
+										<path d="m437.332031.167969h-405.332031c-17.664062 0-32 14.335937-32 32v21.332031c0 17.664062 14.335938 32 32 32h405.332031c17.664063 0 32-14.335938 32-32v-21.332031c0-17.664063-14.335937-32-32-32zm0 0"/>
+									</svg>
+									<svg :class="faqThree === false ? 'block' : 'hidden'" class="w-3 h-3 fill-current" viewbox="0 0 469.33333 469.33333" xmlns="http://www.w3.org/2000/svg">
+										<path d="m437.332031 192h-160v-160c0-17.664062-14.335937-32-32-32h-21.332031c-17.664062 0-32 14.335938-32 32v160h-160c-17.664062 0-32 14.335938-32 32v21.332031c0 17.664063 14.335938 32 32 32h160v160c0 17.664063 14.335938 32 32 32h21.332031c17.664063 0 32-14.335937 32-32v-160h160c17.664063 0 32-14.335937 32-32v-21.332031c0-17.664062-14.335937-32-32-32zm0 0"/>
+									</span>
+								</div>
+								<div x-show="faqThree" x-collapse.duration.500ms>
+									<div class="flex justify-center">
+                                        <div>
+                                            <div class="form-check mt-[8px]">
+                                            <input id="moinde10" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="">
+                                            <label class="form-check-label inline-block text-gray-800" for="moinde10">
+                                                < 10 €
+                                            </label>
+                                            </div>
+                                            <div class="form-check">
+                                            <input id="10-40" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="">
+                                            <label class="form-check-label inline-block text-gray-800" for="10-40">
+                                                10 à 40 €
+                                            </label>
+                                            </div>
+                                            <div class="form-check">
+                                            <input id="40-100" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="">
+                                            <label class="form-check-label inline-block text-gray-800" for="40-100">
+                                                40 à 100 €
+                                            </label>
+                                            </div>
+                                            <div class="form-check">
+                                            <input id="100-200" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="">
+                                            <label class="form-check-label inline-block text-gray-800" for="100-200">
+                                                100 à 200 €
+                                            </label>
+                                            </div>
+                                            <div class="form-check">
+                                            <input id="200-plus" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="">
+                                            <label class="form-check-label inline-block text-gray-800" for="200-plus">
+                                                200 € à plus
+                                            </label>
+											<div class="form-check mb-[8px]">
+                                            <input id="promotion" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="">
+                                            <label class="form-check-label inline-block text-gray-800" for="promotion">
+                                                Promotion
+                                            </label>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+								</div>
+							</div>
+							<div class="mt-1">
+								<div @click="faqFour = ! faqFour" :class="faqFour === true ? activeClass : ''" class="flex items-center justify-between w-full py-3 pl-3 pr-2 font-bold text-indigo-100 bg-blue-500 rounded cursor-pointer hover:text-indigo-100">
+									Categories
+									<span class="flex items-center justify-center w-6 h-6">
+										<svg :class="faqFour === true ? 'block' : 'hidden'" class="w-3 h-3 fill-current" viewbox="0 -192 469.33333 469" xmlns="http://www.w3.org/2000/svg">
+											<path d="m437.332031.167969h-405.332031c-17.664062 0-32 14.335937-32 32v21.332031c0 17.664062 14.335938 32 32 32h405.332031c17.664063 0 32-14.335938 32-32v-21.332031c0-17.664063-14.335937-32-32-32zm0 0"/>
+										</svg>
+										<svg :class="faqFour === false ? 'block' : 'hidden'" class="w-3 h-3 fill-current" viewbox="0 0 469.33333 469.33333" xmlns="http://www.w3.org/2000/svg">
+											<path d="m437.332031 192h-160v-160c0-17.664062-14.335937-32-32-32h-21.332031c-17.664062 0-32 14.335938-32 32v160h-160c-17.664062 0-32 14.335938-32 32v21.332031c0 17.664063 14.335938 32 32 32h160v160c0 17.664063 14.335938 32 32 32h21.332031c17.664063 0 32-14.335937 32-32v-160h160c17.664063 0 32-14.335937 32-32v-21.332031c0-17.664062-14.335937-32-32-32zm0 0"/>
+										</span>
+									</div>
+									<div x-show="faqFour" x-collapse.duration.1000ms>
+										<div id="categorie" class="flex justify-center mt-[8px] mb-[8px]">
+                                            <div>
+                                            {% for cat in categorie %}
+                                                <div class="form-check mb-[8px]">
+                                                <input id="{{cat.nom}}" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="{{cat.nom}}">
+                                                <label class="form-check-label inline-block text-gray-800" for="{{cat.nom}}">
+                                                    {{cat.nom}}
+                                                </label>
+                                                </div>
+                                            {% endfor %}
+                                            </div>
+                                        </div>
+									</div>
+									<div class="mt-1">
+								<div @click="faqFive = ! faqFive" :class="faqFive === true ? activeClass : ''" class="flex items-center justify-between w-full py-3 pl-3 pr-2 font-bold text-indigo-100 bg-blue-500 rounded cursor-pointer hover:text-indigo-100">
+									Sous-Categories
+									<span class="flex items-center justify-center w-6 h-6">
+										<svg :class="faqFive === true ? 'block' : 'hidden'" class="w-3 h-3 fill-current" viewbox="0 -192 469.33333 469" xmlns="http://www.w3.org/2000/svg">
+											<path d="m437.332031.167969h-405.332031c-17.664062 0-32 14.335937-32 32v21.332031c0 17.664062 14.335938 32 32 32h405.332031c17.664063 0 32-14.335938 32-32v-21.332031c0-17.664063-14.335937-32-32-32zm0 0"/>
+										</svg>
+										<svg :class="faqFive === false ? 'block' : 'hidden'" class="w-3 h-3 fill-current" viewbox="0 0 469.33333 469.33333" xmlns="http://www.w3.org/2000/svg">
+											<path d="m437.332031 192h-160v-160c0-17.664062-14.335937-32-32-32h-21.332031c-17.664062 0-32 14.335938-32 32v160h-160c-17.664062 0-32 14.335938-32 32v21.332031c0 17.664063 14.335938 32 32 32h160v160c0 17.664063 14.335938 32 32 32h21.332031c17.664063 0 32-14.335937 32-32v-160h160c17.664063 0 32-14.335937 32-32v-21.332031c0-17.664062-14.335937-32-32-32zm0 0"/>
+										</span>
+									</div>
+									<div x-show="faqFive" x-collapse.duration.1000ms>
+										<div id="sous-categorie" class="flex justify-center mt-[8px] mb-[8px]">
+                                            <div>
+                                            {% for cat in sousCategorie %}
+                                                <div class="form-check mb-[8px]">
+                                                <input id="{{cat.nom}}" class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" value="{{cat.nom}}">
+                                                <label class="form-check-label inline-block text-gray-800" for="{{cat.nom}}">
+                                                    {{cat.nom}}
+                                                </label>
+                                                </div>
+                                            {% endfor %}
+                                            </div>
+                                        </div>
+									</div>
+								</div>
+								<button id="resetSearch" class="flex items-center justify-between w-full py-3 pl-3 pr-2 font-bold text-indigo-100 bg-red-900 rounded cursor-pointer hover:text-indigo-100 mt-[25px]">Annulé la recherche</button>
+								</div>
+								
+								</div>
+								
+								<!--end-->
+							</div>
+							<div class="col-start-2 col-end-6 w-full mx-auto border relative">
+								<div class="col-span-1 w-full mx-auto border">
+									<div class="bg-gray-600 w-100 h-[40px] text-white text-left flex ">
+										<h1 class="ml-[15px] m-auto">Trier par : <a id="pertinence" class="ml-8 active filtre">Pertience</a>   <a id="prixcroissant" class="ml-8 filtre hover:text-orange-400">Prix croissant</a>   <a id="prixdecroissant" class="ml-8 filtre hover:text-orange-400">Prix Décroissant</a></h1>
+									</div>
+
+								</div>
+								<div id="listProduct" class="grid gap-6 ml-[10px] mr-[10px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6 mb-[140px]">
+									
+								</div>
+								<button id="voirPlus" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded absolute bottom-[20px]">Voir plus</button>
+							</div>
+						</div>
+					</main>
+				{% endblock %}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('nav') }}
+    {{ encore_entry_script_tags('filterShop') }}
+{% endblock %}

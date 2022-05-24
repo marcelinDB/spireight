@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block body %} 
+    <div class="grid grid-cols-2 divide-x">
+        <div><img src="https://www.cdiscount.com/pdt2/9/8/7/1/1200x1200/auc3701267507987/rw/deguisement-mascotte-elephant-gris-taille-unique.jpg" alt="error{{status_code}}" title="error{{status_code}}">
+        </div>
+        <div class="p-10">
+        <h2>
+        <h1>Page non trouvée</h1> 
+        Vous venez de rencontrer une erreur {{status_code}}.<br>
+        <a href="{{ path('app_home') }}">Retourner à la page d'accueil</a>.
+        <img src="https://cdn.w600.comps.canstockphoto.fr/caract%C3%A8re-jouet-tambour-dessin-anim%C3%A9-clipart-vecteur_csp51610800.jpg" alt="tambour" title="tambour"> 
+    </h2> </div>
+    </div>
+{% endblock %}

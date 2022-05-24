@@ -1,0 +1,548 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil
+{% endblock %}
+
+{% block connexion %}
+	{% if statusConnexion == true %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Connexion</p>
+		</a>
+	{% else %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Compte</p>
+		</a>
+	{% endif %}
+{% endblock %}
+
+{% block menu %}
+	<script>
+		var menuArray = JSON.parse({{ menuJs|json_encode()|raw }})
+	</script>
+{% endblock %}
+
+{% block body %}
+	<div class="carousel">
+		<div class="slider" id="slider">
+			{% for row in slider %}
+				<section>
+					{{row.vueHtml| raw}}
+				</section>
+			{% endfor %}
+		</div>
+		<div class="control">
+			<span class="arrow left">
+				<i class="fa fa-angle-left"></i>
+			</span>
+			<span class="arrow right">
+				<i class="fa fa-angle-right"></i>
+			</span>
+			<ul>
+				<li class="selected"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+	</div>
+
+	<main>
+		<h1 class="title mt-[80px] mb-10">Nos produits phares</h1>
+		<div
+			class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
+			<!-- phares -->
+			{% for listproduit in produitPhare %}
+				{% set status = "" %}
+				{% set achat = 0 %}
+				{% set location = 0 %}
+				{% set i = 0 %}
+				{% set saveProduit = [] %}
+				{% for j in 0.. listproduit[0]|length -1 %}
+					{% set i = i + 1 %}
+					{% if status == listproduit[0][j].idProduit.id or status == "" %}
+						{% set status = listproduit[0][j].idProduit.id %}
+						{% if listproduit[0][j].idType.nomType == "Achat" or listproduit[0][j].idType.nomType == "Occassion" %}
+							{% set achat = listproduit[0][j].prix %}
+						{% elseif listproduit[0][j].idType.nomType == "Location" %}
+							{% set location = listproduit[0][j].prix %}
+						{% endif %}
+						{% set saveProduit = listproduit[0][j] %}
+					{% else %}
+						<a href="{{ path('article', {'id': saveProduit.idProduit.id }) }}">
+							<div class="w-full max-w-sm mx-auto shadow-md overflow-hidden">
+								<div class="flex items-end justify-end h-56 w-full bg-cover" style="background-image: url({{saveProduit.idProduit.img}})">
+									<button class="p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+										<svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" stroke="currentColor">
+											<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+										</svg>
+									</button>
+								</div>
+								<div class="px-5 py-3">
+									<h3 class="text-gray-700 uppercase">{{saveProduit.idProduit.nom}}</h3>
+									{% if location != 0 %}
+										<span class="text-gray-500 mt-2">Location:
+											{{location|number_format(2)}}
+											€</span><br>
+									{% else %}
+										<span class="text-gray-500 mt-2"></span><br>
+									{% endif %}
+									{% if achat != 0 %}
+										<span class="text-gray-500 mt-2">Achat:
+											{{achat|number_format(2)}}
+											€</span>
+									{% else %}
+										<span class="text-gray-500 mt-2"></span><br>
+									{% endif %}
+								</div>
+							</div>
+						</a>
+						{% set status = listproduit[0][j].idProduit.id %}
+						{% set produit = [] %}
+						{% set achat = 0 %}
+						{% set location = 0 %}
+						{% set saveProduit = listproduit[0][j] %}
+						{% if listproduit[0][j].idType.nomType == "Achat" or listproduit[0][j].idType.nomType == "Occassion" %}
+							{% set achat = listproduit[0][j].prix %}
+						{% elseif listproduit[0][j].idType.nomType == "Location" %}
+							{% set location = listproduit[0][j].prix %}
+						{% endif %}
+					{% endif %}
+					{% if i == listproduit[0]|length %}
+						<a href="{{ path('article', {'id': saveProduit.idProduit.id }) }}">
+							<div class="w-full max-w-sm mx-auto shadow-md overflow-hidden">
+								<div class="flex items-end justify-end h-56 w-full bg-cover" style="background-image: url({{saveProduit.idProduit.img}})">
+									<div class="inline-flex justify-self-stretch">
+										{% if listproduit[1]|length > 0 %}
+											<button class="justify-self-start p-2 rounded-full bg-red-400 text-white -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+												<h3>Promo</h3>
+											</button>
+										{% endif %}
+										<button class="justify-self-end p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+											<svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" stroke="currentColor">
+												<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+											</svg>
+										</button>
+									</div>
+								</div>
+								<div class="px-5 py-3">
+									<h3 class="text-gray-700 uppercase">{{saveProduit.idProduit.nom}}</h3>
+									{% if listproduit[1]|length > 0 %}
+										{% if location != 0 %}
+											<span class="text-gray-500 mt-2">Location:
+												<span class="line-through text-red-400">{{location|number_format(2)}}</span>
+												<span class="text-green-600">{{(location * (listproduit[1][0].taux / 100))|number_format(2) }}</span>
+												€</span><br>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+										{% if achat != 0 %}
+											<span class="text-gray-500 mt-2">Achat:
+												<span class="line-through text-red-400">{{achat|number_format(2)}}</span>
+												<span class="text-green-600">{{(achat * (listproduit[1][0].taux / 100))|number_format(2) }}</span>
+												€</span>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+									{% else %}
+										{% if location != 0 %}
+											<span class="text-gray-500 mt-2">Location:
+												{{location|number_format(2)}}
+												€</span><br>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+										{% if achat != 0 %}
+											<span class="text-gray-500 mt-2">Achat:
+												{{achat|number_format(2)}}
+												€</span>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+									{% endif %}
+								</div>
+							</div>
+						</a>
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		</div>
+		<div class="block relative h-[40px] w-100 mt-[20px] mb-[10px]">
+			<a href="{{ path('boutique') }}" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1.5 px-4 border border-gray-400 rounded shadow absolute inset-y-0 right-2">Voir plus</a>
+		</div>
+		<h1 class="title mt-[80px] mb-10">Nouveautés</h1>
+		<div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
+
+			{% for newProd in newProduct %}
+				{% set status = "" %}
+				{% set achat = 0 %}
+				{% set location = 0 %}
+				{% set i = 0 %}
+				{% set saveProduit = [] %}
+				{% for j in 0.. newProd[0]|length -1 %}
+					{% set i = i + 1 %}
+					{% if status == newProd[0][j].idProduit.id or status == "" %}
+						{% set status = newProd[0][j].idProduit.id %}
+						{% if newProd[0][j].idType.nomType == "Achat" or newProd[0][j].idType.nomType == "Occassion" %}
+							{% set achat = newProd[0][j].prix %}
+						{% elseif newProd[0][j].idType.nomType == "Location" %}
+							{% set location = newProd[0][j].prix %}
+						{% endif %}
+						{% set saveProduit = newProd[0][j] %}
+					{% else %}
+						<a href="{{ path('article', {'id': saveProduit.idProduit.id }) }}">
+							<div class="w-full max-w-sm mx-auto shadow-md overflow-hidden">
+								<div class="flex items-end justify-end h-56 w-full bg-cover" style="background-image: url({{saveProduit.idProduit.img}})">
+									<button class="p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+										<button class="justify-self-start p-2 rounded-full bg-red-400 text-white -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+											<h3>Nouveau</h3>
+										</button>
+										<svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" stroke="currentColor">
+											<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+										</svg>
+									</button>
+								</div>
+								<div class="px-5 py-3">
+									<h3 class="text-gray-700 uppercase">{{saveProduit.idProduit.nom}}</h3>
+									{% if location != 0 %}
+										<span class="text-gray-500 mt-2">Location:
+											{{location|number_format(2)}}
+											€</span><br>
+									{% else %}
+										<span class="text-gray-500 mt-2"></span><br>
+									{% endif %}
+									{% if achat != 0 %}
+										<span class="text-gray-500 mt-2">Achat:
+											{{achat|number_format(2)}}
+											€</span>
+									{% else %}
+										<span class="text-gray-500 mt-2"></span><br>
+									{% endif %}
+								</div>
+							</div>
+						</a>
+						{% set status = newProd[0][j].idProduit.id %}
+						{% set produit = [] %}
+						{% set achat = 0 %}
+						{% set location = 0 %}
+						{% set saveProduit = newProd[0][j] %}
+						{% if newProd[0][j].idType.nomType == "Achat" or newProd[0][j].idType.nomType == "Occassion" %}
+							{% set achat = newProd[0][j].prix %}
+						{% elseif newProd[0][j].idType.nomType == "Location" %}
+							{% set location = newProd[0][j].prix %}
+						{% endif %}
+					{% endif %}
+					{% if i == newProd[0]|length %}
+						<a href="{{ path('article', {'id': saveProduit.idProduit.id }) }}">
+							<div class="w-full max-w-sm mx-auto shadow-md overflow-hidden">
+								<div class="flex items-end justify-end h-56 w-full bg-cover" style="background-image: url({{saveProduit.idProduit.img}})">
+									<div class="inline-flex justify-self-stretch">
+										<button class="justify-self-start p-2 rounded-full bg-red-400 text-white -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+											<h3>Nouveau</h3>
+										</button>
+										{% if newProd[1]|length > 0 %}
+											<button class="justify-self-start p-2 rounded-full bg-red-400 text-white -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+												<h3>Promo</h3>
+											</button>
+										{% endif %}
+										<button class="justify-self-end p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+											<svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" stroke="currentColor">
+												<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+											</svg>
+										</button>
+									</div>
+								</div>
+								<div class="px-5 py-3">
+									<h3 class="text-gray-700 uppercase">{{saveProduit.idProduit.nom}}</h3>
+									{% if newProd[1]|length > 0 %}
+										{% if location != 0 %}
+											<span class="text-gray-500 mt-2">Location:
+												<span class="line-through text-red-400">{{location|number_format(2)}}</span>
+												<span class="text-green-600">{{(location * (newProd[1][0].taux / 100))|number_format(2) }}</span>
+												€</span><br>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+										{% if achat != 0 %}
+											<span class="text-gray-500 mt-2">Achat:
+												<span class="line-through text-red-400">{{achat|number_format(2)}}</span>
+												<span class="text-green-600">{{(achat * (newProd[1][0].taux / 100))|number_format(2) }}</span>
+												€</span>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+									{% else %}
+										{% if location != 0 %}
+											<span class="text-gray-500 mt-2">Location:
+												{{location|number_format(2)}}
+												€</span><br>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+										{% if achat != 0 %}
+											<span class="text-gray-500 mt-2">Achat:
+												{{achat|number_format(2)}}
+												€</span>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+									{% endif %}
+								</div>
+							</div>
+						</a>
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+
+		</div>
+		<div class="block relative h-[40px] w-100 mt-[20px] mb-[10px]">
+			<a href="{{ path('boutique')}}" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1.5 px-4 border border-gray-400 rounded shadow absolute inset-y-0 right-2">Voir plus</a>
+		</div>
+		{% set promotionNumber = 0 %}
+		{% for promo in promotionList %}
+			{% if promo[1]|length > 0 %}
+				{% set promotionNumber = 1 %}
+			{% endif %}
+		{% endfor %}
+		{% if promotionNumber != 0 %}
+			<h1 class="title mt-[80px] mb-10">Promotion du mois</h1>
+		{% endif %}
+		<div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
+			{% for promo in promotionList %}
+				{% set status = "" %}
+				{% set achat = 0 %}
+				{% set location = 0 %}
+				{% set i = 0 %}
+				{% set saveProduit = [] %}
+				{% for j in 0.. promo[0]|length -1 %}
+					{% set i = i + 1 %}
+					{% if status == promo[0][j].idProduit.id or status == "" %}
+						{% set status = promo[0][j].idProduit.id %}
+						{% if promo[0][j].idType.nomType == "Achat" or promo[0][j].idType.nomType == "Occassion" %}
+							{% set achat = promo[0][j].prix %}
+						{% elseif promo[0][j].idType.nomType == "Location" %}
+							{% set location = promo[0][j].prix %}
+						{% endif %}
+						{% set saveProduit = promo[0][j] %}
+					{% else %}
+						<a href="{{ path('article', {'id': saveProduit.idProduit.id }) }}">
+							<div class="w-full max-w-sm mx-auto shadow-md overflow-hidden">
+								<div class="flex items-end justify-end h-56 w-full bg-cover" style="background-image: url({{saveProduit.idProduit.img}})">
+									<button class="justify-self-start p-2 rounded-full bg-red-400 text-white -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+										<h3>Nouveau</h3>
+									</button>
+									<button class="p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+										<svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" stroke="currentColor">
+											<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+										</svg>
+									</button>
+								</div>
+								<div class="px-5 py-3">
+									<h3 class="text-gray-700 uppercase">{{saveProduit.idProduit.nom}}</h3>
+									{% if location != 0 %}
+										<span class="text-gray-500 mt-2">Location:
+											<span class="line-through text-red-400">{{location|number_format(2)}}</span>
+											<span class="text-green-600">{{(location * (promo[1].taux / 100))|number_format(2) }}</span>
+											€</span><br>
+									{% else %}
+										<span class="text-gray-500 mt-2"></span><br>
+									{% endif %}
+									{% if achat != 0 %}
+										<span class="text-gray-500 mt-2">Achat:
+											<span class="line-through text-red-400">{{achat|number_format(2)}}</span>
+											<span class="text-green-600">{{(achat * (promo[1].taux / 100))|number_format(2) }}</span>
+											€</span>
+									{% else %}
+										<span class="text-gray-500 mt-2"></span><br>
+									{% endif %}
+								</div>
+							</div>
+						</a>
+						{% set status = promo[0][j].idProduit.id %}
+						{% set produit = [] %}
+						{% set achat = 0 %}
+						{% set location = 0 %}
+						{% set saveProduit = promo[0][j] %}
+						{% if promo[0][j].idType.nomType == "Achat" or promo[0][j].idType.nomType == "Occassion" %}
+							{% set achat = promo[0][j].prix %}
+						{% elseif promo[0][j].idType.nomType == "Location" %}
+							{% set location = promo[0][j].prix %}
+						{% endif %}
+					{% endif %}
+					{% if i == promo[0]|length %}
+						<a href="{{ path('article', {'id': saveProduit.idProduit.id }) }}">
+							<div class="w-full max-w-sm mx-auto shadow-md overflow-hidden">
+								<div class="flex items-end justify-end h-56 w-full bg-cover" style="background-image: url({{saveProduit.idProduit.img}})">
+									<div class="inline-flex justify-self-stretch">
+										<button class="justify-self-start p-2 rounded-full bg-red-400 text-white -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+											<h3>Promo</h3>
+										</button>
+										<button class="justify-self-end p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+											<svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" stroke="currentColor">
+												<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+											</svg>
+										</button>
+									</div>
+								</div>
+								<div class="px-5 py-3">
+									<h3 class="text-gray-700 uppercase">{{saveProduit.idProduit.nom}}</h3>
+									{% if location != 0 %}
+										<span class="text-gray-500 mt-2">Location:
+											<span class="line-through text-red-400">{{(location)|number_format(2)}}</span>
+											<span class="text-green-600">{{(location * (promo[1].taux / 100))|number_format(2) }}</span>
+											€</span><br>
+									{% else %}
+										<span class="text-gray-500 mt-2"></span><br>
+									{% endif %}
+									{% if achat != 0 %}
+										<span class="text-gray-500 mt-2">Achat:
+											<span class="line-through text-red-400">{{achat}}</span>
+											<span class="text-green-600">{{(achat * (promo[1].taux / 100))|number_format(2) }}</span>
+											€</span>
+									{% else %}
+										<span class="text-gray-500 mt-2"></span><br>
+									{% endif %}
+								</div>
+							</div>
+						</a>
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+
+		</div>
+		{% if promotionNumber != 0 %}
+			<div class="block relative h-[40px] w-100 mt-[20px] mb-[10px]">
+				<a href="{{ path('boutique', {'promotion': 'true' }) }}" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1.5 px-4 border border-gray-400 rounded shadow absolute inset-y-0 right-2">Voir plus</a>
+			</div>
+		{% endif %}
+
+		<h1 class="title mt-[80px] mb-10">Nos packs</h1>
+		<div
+			class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
+			<!-- phares -->
+			{% for listproduit in packs %}
+				{% set status = "" %}
+				{% set achat = 0 %}
+				{% set location = 0 %}
+				{% set i = 0 %}
+				{% set saveProduit = [] %}
+				{% for j in 0.. listproduit[0]|length -1 %}
+					{% set i = i + 1 %}
+					{% if status == listproduit[0][j].idProduit.id or status == "" %}
+						{% set status = listproduit[0][j].idProduit.id %}
+						{% if listproduit[0][j].idType.nomType == "Achat" or listproduit[0][j].idType.nomType == "Occassion" %}
+							{% set achat = listproduit[0][j].prix %}
+						{% elseif listproduit[0][j].idType.nomType == "Location" %}
+							{% set location = listproduit[0][j].prix %}
+						{% endif %}
+						{% set saveProduit = listproduit[0][j] %}
+					{% else %}
+						<a href="{{ path('article', {'id': saveProduit.idProduit.id }) }}">
+							<div class="w-full max-w-sm mx-auto shadow-md overflow-hidden">
+								<div class="flex items-end justify-end h-56 w-full bg-cover" style="background-image: url({{saveProduit.idProduit.img}})">
+									<button class="p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+										<svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" stroke="currentColor">
+											<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+										</svg>
+									</button>
+								</div>
+								<div class="px-5 py-3">
+									<h3 class="text-gray-700 uppercase">{{saveProduit.idProduit.nom}}</h3>
+									{% if location != 0 %}
+										<span class="text-gray-500 mt-2">Location:
+											{{location|number_format(2)}}
+											€</span><br>
+									{% else %}
+										<span class="text-gray-500 mt-2"></span><br>
+									{% endif %}
+									{% if achat != 0 %}
+										<span class="text-gray-500 mt-2">Achat:
+											{{achat|number_format(2)}}
+											€</span>
+									{% else %}
+										<span class="text-gray-500 mt-2"></span><br>
+									{% endif %}
+								</div>
+							</div>
+						</a>
+						{% set status = listproduit[0][j].idProduit.id %}
+						{% set produit = [] %}
+						{% set achat = 0 %}
+						{% set location = 0 %}
+						{% set saveProduit = listproduit[0][j] %}
+						{% if listproduit[0][j].idType.nomType == "Achat" or listproduit[0][j].idType.nomType == "Occassion" %}
+							{% set achat = listproduit[0][j].prix %}
+						{% elseif listproduit[0][j].idType.nomType == "Location" %}
+							{% set location = listproduit[0][j].prix %}
+						{% endif %}
+					{% endif %}
+					{% if i == listproduit[0]|length %}
+						<a href="{{ path('article', {'id': saveProduit.idProduit.id }) }}">
+							<div class="w-full max-w-sm mx-auto shadow-md overflow-hidden">
+								<div class="flex items-end justify-end h-56 w-full bg-cover" style="background-image: url({{saveProduit.idProduit.img}})">
+									<div class="inline-flex justify-self-stretch">
+										{% if listproduit[1]|length > 0 %}
+											<button class="justify-self-start p-2 rounded-full bg-red-400 text-white -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+												<h3>Promo</h3>
+											</button>
+										{% endif %}
+										<button class="justify-self-end p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+											<svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" stroke="currentColor">
+												<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+											</svg>
+										</button>
+									</div>
+								</div>
+								<div class="px-5 py-3">
+									<h3 class="text-gray-700 uppercase">{{saveProduit.idProduit.nom}}</h3>
+									{% if listproduit[1]|length > 0 %}
+										{% if location != 0 %}
+											<span class="text-gray-500 mt-2">Location:
+												<span class="line-through text-red-400">{{location|number_format(2)}}</span>
+												<span class="text-green-600">{{(location * (listproduit[1][0].taux / 100))|number_format(2) }}</span>
+												€</span><br>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+										{% if achat != 0 %}
+											<span class="text-gray-500 mt-2">Achat:
+												<span class="line-through text-red-400">{{achat|number_format(2)}}</span>
+												<span class="text-green-600">{{(achat * (listproduit[1][0].taux / 100))|number_format(2) }}</span>
+												€</span>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+									{% else %}
+										{% if location != 0 %}
+											<span class="text-gray-500 mt-2">Location:
+												{{location|number_format(2)}}
+												€</span><br>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+										{% if achat != 0 %}
+											<span class="text-gray-500 mt-2">Achat:
+												{{achat|number_format(2)}}
+												€</span>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+									{% endif %}
+								</div>
+							</div>
+						</a>
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+		</div>
+		<div class="block relative h-[40px] w-100 mt-[20px] mb-[10px]">
+			<a href="{{ path('boutique', {'categories': 'Packs' }) }}" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1.5 px-4 border border-gray-400 rounded shadow absolute inset-y-0 right-2">Voir plus</a>
+		</div>
+	</main>
+{% endblock %}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('nav') }}
+	{{ encore_entry_script_tags('slider') }}
+{% endblock %}

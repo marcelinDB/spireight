@@ -1,0 +1,216 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Devis
+{% endblock %}
+
+{% block connexion %}
+	{% if statusConnexion == true %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Connexion</p>
+		</a>
+	{% else %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Compte</p>
+		</a>
+	{% endif %}
+{% endblock %}
+
+{% block menu %}
+	<script>
+		var menuArray = JSON.parse({{ menuJs|json_encode()|raw }})
+	</script>
+{% endblock %}
+
+{% block body %}
+	<main class="relative">
+		<h1 class="title mt-[80px] mb-10">Liste des devis</h1>
+		<p class="text-left mx-[20px]">
+			<a href="{{ path('app_home') }}">Accueil</a>
+			>
+			<a href="{{ path('profil') }}">Compte</a>
+			>
+			<a href="{{ path('list_devis') }}">Liste des devis</a>
+		</p>
+        <div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6 bg-gray-300 border-l border-r border-b border-t border-black">
+				<div class="col-start-1 col-end-4 w-full m-auto px-6 py-7 border-r border-black">
+					<h1>Nom</h1>
+				</div>
+				<div class="col-start-4 col-end-7 w-full m-auto px-6 py-7 border-r border-black">
+					<h1>Date</h1>
+				</div>
+				<div class="col-start-7 col-end-10 w-full m-auto px-6 py-7 border-r border-black">
+					<h1>Status</h1>
+				</div>
+				<div class="col-start-10 col-end-12 w-full m-auto px-6 py-7">
+					<h1>Liens</h1>
+				</div>
+			</div>
+		{% if statusAdmin == 0 %}
+			{% for devi in devis %}
+            <div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 border-l border-r border-b border-black">
+                <div class="col-start-1 col-end-4 w-full m-auto px-6 py-7 border-r border-black">
+                    <h1 class="">{{devi.nom}}</h1>
+                </div>
+                <div class="col-start-4 col-end-7 w-full m-auto px-6 py-7 border-r border-black">
+                    <h1 class="">{{devi.date|date("d/m/Y")}}</h1>
+                </div>
+				<div class="col-start-7 col-end-10 w-full m-auto px-6 py-7 border-r border-black">
+                    <h1 class="">{{devi.status}}</h1>
+                </div>
+                <div class="col-start-10 col-end-12 w-full m-auto px-6 py-7">
+                    <h1 class=""><a href="./devis?dateref={{devi.date|date("Y-m-d")}}" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Redirection</a></h1>
+                </div>
+            </div>
+        {% endfor %}
+		{% else %}
+			{% for devi in devis %}
+            <div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 border-l border-r border-b border-black">
+                <div class="col-start-1 col-end-4 w-full m-auto px-6 py-7 border-r border-black">
+                    <h1 class="">{{devi.nom}}</h1>
+                </div>
+                <div class="col-start-4 col-end-7 w-full m-auto px-6 py-7 border-r border-black">
+                    <h1 class="">{{devi.date|date("d/m/Y")}}</h1>
+                </div>
+				<div class="col-start-7 col-end-10 w-full m-auto px-6 py-7 border-r border-black">
+                    <h1 class="">{{devi.status}}</h1>
+                </div>
+                <div class="col-start-10 col-end-12 w-full m-auto px-6 py-7">
+                    <h1 class=""><a href="{{ path('devis',{dateref: devi.date|date("Y-m-d"),compte: devi.id}) }}" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">Redirection</a></h1>
+                </div>
+            </div>
+        	{% endfor %}
+		{% endif %}
+        
+
+		<h1 class="title mt-[200px] mb-10">PRODUITS SIMILAIRES</h1>
+        <div
+			class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
+			<!-- phares -->
+			{% set limit = 0 %}
+			{% for simi in similary %}
+				{% if limit < 4 %}
+					{% set limit = limit + 1 %}
+					{% set status = "" %}
+					{% set achat = 0 %}
+					{% set location = 0 %}
+					{% set i = 0 %}
+					{% set saveProduit = [] %}
+					{% for j in 0.. simi[0]|length -1 %}
+						{% set i = i + 1 %}
+						{% if status == simi[0][j].idProduit.id or status == "" %}
+							{% set status = simi[0][j].idProduit.id %}
+							{% if simi[0][j].idType.nomType == "Achat" or simi[0][j].idType.nomType == "Occassion" %}
+								{% set achat = simi[0][j].prix %}
+							{% elseif simi[0][j].idType.nomType == "Location" %}
+								{% set location = simi[0][j].prix %}
+							{% endif %}
+							{% set saveProduit = simi[0][j] %}
+						{% else %}
+							<a href="{{ path('article',{id: saveProduit.idProduit.id}) }}">
+								<div class="w-full max-w-sm mx-auto shadow-md overflow-hidden">
+									<div class="flex items-end justify-end h-56 w-full bg-cover" style="background-image: url({{saveProduit.idProduit.img}})">
+										<button class="p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+											<svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" stroke="currentColor">
+												<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+											</svg>
+										</button>
+									</div>
+									<div class="px-5 py-3">
+										<h3 class="text-gray-700 uppercase">{{saveProduit.idProduit.nom}}</h3>
+										{% if location != 0 %}
+											<span class="text-gray-500 mt-2">Location:
+												{{location|number_format(2)}}
+												€</span><br>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+										{% if achat != 0 %}
+											<span class="text-gray-500 mt-2">Achat:
+												{{achat|number_format(2)}}
+												€</span>
+										{% else %}
+											<span class="text-gray-500 mt-2"></span><br>
+										{% endif %}
+									</div>
+								</div>
+							</a>
+							{% set status = simi[0][j].idProduit.id %}
+							{% set produit = [] %}
+							{% set achat = 0 %}
+							{% set location = 0 %}
+							{% set saveProduit =simi[0][j] %}
+							{% if simi[0][j].idType.nomType == "Achat" or simi[0][j].idType.nomType == "Occassion" %}
+								{% set achat = simi[0][j].prix %}
+							{% elseif simi[0][j].idType.nomType == "Location" %}
+								{% set location = simi[0][j].prix %}
+							{% endif %}
+						{% endif %}
+						{% if i == simi[0]|length %}
+							<a href="{{ path('article',{id: saveProduit.idProduit.id}) }}">
+								<div class="w-full max-w-sm mx-auto shadow-md overflow-hidden">
+									<div class="flex items-end justify-end h-56 w-full bg-cover" style="background-image: url({{saveProduit.idProduit.img}})">
+										<div class="inline-flex justify-self-stretch">
+											{% if simi[1]|length > 0 %}
+												<button class="justify-self-start p-2 rounded-full bg-red-400 text-white -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+													<h3>Promo</h3>
+												</button>
+											{% endif %}
+											<button class="justify-self-end p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+												<svg class="h-5 w-5" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" stroke="currentColor">
+													<path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+												</svg>
+											</button>
+										</div>
+									</div>
+									<div class="px-5 py-3">
+										<h3 class="text-gray-700 uppercase">{{saveProduit.idProduit.nom}}</h3>
+										{% if simi[1]|length > 0 %}
+											{% if location != 0 %}
+												<span class="text-gray-500 mt-2">Location:
+													<span class="line-through text-red-400">{{(location)|number_format(2)}}</span>
+													<span class="text-green-600">{{(location * (simi[1][0].taux / 100))|number_format(2) }}</span>
+													€</span><br>
+											{% else %}
+												<span class="text-gray-500 mt-2"></span><br>
+											{% endif %}
+											{% if achat != 0 %}
+												<span class="text-gray-500 mt-2">Achat:
+													<span class="line-through text-red-400">{{achat|number_format(2)}}</span>
+													<span class="text-green-600">{{(achat * (simi[1][0].taux / 100))|number_format(2) }}</span>
+													€</span>
+											{% else %}
+												<span class="text-gray-500 mt-2"></span><br>
+											{% endif %}
+										{% else %}
+											{% if location != 0 %}
+												<span class="text-gray-500 mt-2">Location:
+													{{location|number_format(2)}}
+													€</span><br>
+											{% else %}
+												<span class="text-gray-500 mt-2"></span><br>
+											{% endif %}
+											{% if achat != 0 %}
+												<span class="text-gray-500 mt-2">Achat:
+													{{achat|number_format(2)}}
+													€</span>
+											{% else %}
+												<span class="text-gray-500 mt-2"></span><br>
+											{% endif %}
+										{% endif %}
+									</div>
+								</div>
+							</a>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+		</div>
+
+	</main>
+{% endblock %}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('nav') }}
+{% endblock %}

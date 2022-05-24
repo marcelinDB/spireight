@@ -1,0 +1,288 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;900&family=Roboto:wght@900&display=swap');
+
+header a{
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+h1,h2,h3{
+  font-family: 'Poppins', sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+span{
+  font-size: 20px;
+  font-weight: 500;
+}
+
+h3.text-gray-700{
+  font-size: 22px;
+}
+
+#slider{
+  cursor:grab;
+}
+
+h1.title{
+  position: relative;
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: bold;
+  display: inline-block; /* Header are 100% width by their default block behaviour */
+}
+h1.title:before{
+  position: absolute;
+  height: 2px;
+  width: 50%;
+  left: 25%;
+  bottom: -5px;
+  background: rgb(47, 203, 250);
+  display: block;
+  content: "";
+}
+a.title{
+  position: relative;
+  display: inline-block; /* Header are 100% width by their default block behaviour */
+}
+a.title:before{
+  position: absolute;
+  height: 2px;
+  width: 50%;
+  left: 25%;
+  bottom: -2px;
+  background: rgb(228, 155, 20);
+  display: block;
+  content: "";
+}
+
+a.active{
+  position: relative;
+  color:rgb(228, 155, 20);
+  display: inline-block; /* Header are 100% width by their default block behaviour */
+}
+a.active:before{
+  position: absolute;
+  height: 2px;
+  width: 50%;
+  left: 25%;
+  bottom: -2px;
+  background: rgb(228, 155, 20);
+  display: block;
+  content: "";
+}
+
+.filtre{
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+  cursor:pointer;
+}
+
+main{
+  text-align: center;
+}
+	#audio:hover{	background-color: #5a67d8;}
+	#eclairage:hover{background-color: #805ad5;}
+	#video:hover{	background-color: #3182ce;}
+	#mobilier:hover{background-color: #319795;}
+	#structure:hover{background-color: #d53f8c;}
+	#packs:hover{background-color: #718096;}
+	
+	header div a:hover,header div button:hover{
+	align-content:left;
+		background-color:#75797f;
+	}
+	
+	#buttonMenuBurger{
+		display:none;
+		z-index:100;
+		height:60px;
+		width:60px;
+	}
+	
+	#dropmenu{display:none;}
+	#dropmenu a:hover{
+		color:blue;
+	}
+	#searchbar{display:none;}
+	#content{width:100%;min-height:90vh;margin-bottom: 40px;}
+	@media screen and (max-width: 640px) {
+		#toolsBar {
+			height:60px;
+		}
+		#toolsBar i{
+			height:10px;
+			margin-top:0;
+			margin-bottom:18px;
+		}
+		#navLink{
+			display:block;
+		}
+		#navLink > a{
+			display:block;
+			width:100%;
+			text-align:center;
+			margin:0;
+			font-weight: bold;
+		}
+	}
+	
+	#searchBarMobile{
+		display:none;
+	}
+	
+.md\:v-1\/2 {
+    width: 100%;
+}
+.md\:justify-start1 {
+    justify-content: center;
+}
+
+.carousel {
+  margin-top: 20px;
+  border: 2px solid #416be4;
+  height: 400px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.slider {
+  display: flex;
+  height: 100%;
+  width: 400%;
+}
+.slider section {
+  flex-basis: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-size: 20px;
+}
+.left, .right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.arrow i {
+  font-size: 70px;
+  -webkit-user-select: none;
+  color: #d3ddf2;
+  -webkit-text-stroke: 1px black;
+}
+.left {
+  left: 10px;
+}
+.right {
+  right: 10px;
+}
+.control ul {
+  list-style: none;
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin: 0;
+  padding: 0;
+  transform: translate(-50%);
+}
+.control ul li {
+  width: 20px;
+  height: 20px;
+  background: #3330;
+  border: 2px solid rgb(228, 227, 227);
+  border-radius: 50px;
+  margin: 10px;
+  cursor: pointer;
+}
+.control ul li.selected {
+  background: rgb(212, 212, 212);
+}
+
+footer{
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+
+/*All touch screen and mobile devices (including tablets, smartphones) can be detected with css with the following @media rule.*/
+
+@media only screen and (hover: none) and (pointer: coarse){
+
+/* Regular CSS rules here*/
+#toolsBar {
+    height:100px;
+}
+#toolsBar i{
+    height:10px;
+    margin-bottom:18px;
+}
+#buttonMenuBurger i{
+  font-size: 2rem;
+
+}
+.arrow i {
+  font-size: 130px;
+  -webkit-user-select: none;
+  color: #d3ddf2;
+  -webkit-text-stroke: 1px black;
+}
+#navLink{
+    display:block;
+}
+#navLink > a{
+    display:block;
+    width:100%;
+    text-align:center;
+    font-size: 25px;
+    margin:0;
+    font-weight: bold;
+}
+.flex-shrink-0.flex.items-center{
+  display: flex;
+}
+.flex-1.flex.items-center.justify-center{
+  justify-content: center;
+}
+.grid.grid-cols-1.gap-0.w-auto.mr-5{
+  font-size: 1.3rem;
+}
+.grid.grid-cols-1.gap-0.w-auto.mr-5 i{
+  font-size: 2.3rem;
+}
+.absolute.inset-y-0.right-0.flex.items-center.pr-2{
+  position: absolute;
+  right:0;
+}
+#buttonMenuBurger{
+  display:none;
+  z-index:100;
+  height:100px;
+  width:100px;
+}
+#content{width:100%;max-width: 100%;}
+.carousel{
+  height: 620px;
+}
+}
+
+input[type=submit]{
+  cursor: pointer;
+}
+
+.buttonImageSwitch{
+  border: solid 2px;
+  border-color: rgba(255, 0, 0, 0);
+}
+
+.buttonImageSwitch:hover{
+  border-color: red;
+}
+

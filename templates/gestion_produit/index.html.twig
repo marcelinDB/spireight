@@ -1,0 +1,273 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion Produit
+{% endblock %}
+
+{% block connexion %}
+	{% if statusConnexion == true %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Connexion</p>
+		</a>
+	{% else %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Compte</p>
+		</a>
+	{% endif %}
+{% endblock %}
+
+{% block menu %}
+	<script>
+		var menuArray = JSON.parse({{ menuJs|json_encode()|raw }})
+	</script>
+{% endblock %}
+
+{% block body %}
+	<main>
+		<h1 class="title mt-[80px] mb-10">Gestion Produit</h1>
+		<p class="text-left  mx-[20px]">
+			<a href="{{ path('app_home') }}">Accueil</a>
+			>
+			<a href="{{ path('connexion') }}">Compte</a>
+			>
+			<a href="{{ path('liste_gestion') }}">Liste des Produits</a>
+			>
+			<a href="{{ path('gestion_produit') }}">Gestion Produit</a>
+		</p>
+		{% if produitInfo|length > 0 %}
+			{% if idproduct != "" %}
+				<form action="{{ path('gestion_produit',{idproduct: idproduct}) }}" method="post" id="formulaire">
+			{% else %}
+				<form action="{{ path('gestion_produit') }}" method="post" id="formulaire">
+			{% endif %}
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6">
+				<div class="col-start-3 col-end-6 w-full m-auto px-6 py-7 text-left ">
+					<label class="" for="nom">Nom:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="nom" id="nom" placeholder="Nom" value="{{produitInfo.nom}}">
+				</div>
+				<div class="col-start-7 col-end-10 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="marque">Marque:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="marque" id="marque" placeholder="Marque" value="{{produitInfo.marque}}">
+				</div>
+			</div>
+			<div class="w-full text-left">
+				<label class="" for="description">Description:</label>
+				<textarea class="mb-[1.75rem] shadow appearance-none border rounded w-full min-h-[245px] max-h-[245px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="description" id="description" value="">{{produitInfo.description}}</textarea>
+				<label class="" for="img">Image:</label>
+				<input class="mb-[1.75rem] shadow appearance-none border rounded w-[98%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="img" id="img" placeholder="image" value="{{produitInfo.img}}">
+				<label class="" for="img1">Image 1:</label>
+				<input class="mb-[1.75rem] shadow appearance-none border rounded w-[98%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="img1" id="img1" placeholder="image 1" value="{{produitInfo.img2}}">
+				<label class="" for="img2">Image 2:</label>
+				<input class="mb-[1.75rem] shadow appearance-none border rounded w-[98%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="img2" id="img2" placeholder="image 2" value="{{produitInfo.img3}}">
+				<label class="" for="img3">Image 3:</label>
+				<input class="mb-[1.75rem] shadow appearance-none border rounded w-[98%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="img3" id="img3" placeholder="image 3" value="{{produitInfo.img4}}">
+				<label class="" for="img4">Image 4:</label>
+				<input class="mb-[1.75rem] shadow appearance-none border rounded w-[98%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="img4" id="img4" placeholder="image 4" value="{{produitInfo.img5}}">
+				<div class="flex justify-center">
+					<div class="mb-3 xl:w-96">
+						<select name="categorie" id="categorie" class="form-select appearance-none
+							      block
+							      w-full
+							      px-3
+							      py-1.5
+							      text-base
+							      font-normal
+							      text-gray-700
+							      bg-white bg-clip-padding bg-no-repeat
+							      border border-solid border-gray-300
+							      rounded
+							      transition
+							      ease-in-out
+							      m-0
+							      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example">
+							<option value="">Selectionner une catégorie</option>
+							{% for select in categorie %}
+								{% if produitInfo.cat.id == select.id %}
+									<option selected value="{{select.id}}">{{select.terc}}
+									/
+									{{select.nom}}</option>
+								{% else %}
+									<option value="{{select.id}}">{{select.terc}}
+									/
+									{{select.nom}}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6">
+				<div class="col-start-1 col-end-4 w-full m-auto px-6 py-7  text-left">
+					<label class="" for="datepromo">Date Fin Promotion:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" name="datepromo" id="datepromo" placeholder="Date Fin Promotion" value="{{produitPromo[0].dateFin|date('Y-m-d')}}">
+				</div>
+				<div class="col-start-5 col-end-8 w-full m-auto px-6 py-7  text-left">
+					<label class="" for="datephare">Date Fin Produit Phare:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" name="datephare" id="datephare" placeholder="Date Produit Phare" value="{{produitPhare[0].date|date('Y-m-d')}}">
+				</div>
+				<div class="col-start-9 col-end-12 w-full m-auto px-6 py-7  text-left">
+					<label class="" for="promo">Taux en % de la promotion:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" name="promo" id="promo" placeholder="Promotion" value="{{produitPromo[0].taux}}">
+				</div>
+			</div>
+			<h2 class="text-left ml-[10px] mt-[40px]">Achat :</h2>
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6">
+				<div class="col-start-1 col-end-4 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="achatqt">Quantite:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" name="achatqt" id="achatqt" placeholder="Quantite" value="{{produitAchat[0].quantite}}">
+				</div>
+				<div class="col-start-5 col-end-8 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="achatprix">Prix:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" step="0.01" name="achatprix" id="achatprix" placeholder="Prix" value="{{produitAchat[0].prix}}">
+				</div>
+			</div>
+			<h2 class="text-left ml-[10px] mt-[40px]">Occassion :</h2>
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6">
+				<div class="col-start-1 col-end-4 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="occassionqt">Quantite:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" name="occassionqt" id="occassionqt" placeholder="Quantite" value="{{produitOccassion[0].quantite}}">
+				</div>
+				<div class="col-start-5 col-end-8 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="occassionprix">Prix:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" step="0.01" name="occassionprix" id="occassionprix" placeholder="Prix" value="{{produitOccassion[0].prix}}">
+				</div>
+			</div>
+			<h2 class="text-left ml-[10px] mt-[40px]">Location :</h2>
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6">
+				<div class="col-start-1 col-end-4 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="locationqt">Quantite:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" name="locationqt" id="locationqt" placeholder="Quantite" value="{{produitLocation[0].quantite}}">
+				</div>
+				<div class="col-start-5 col-end-8 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="locationprix">Prix:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" step="0.01" name="locationprix" id="locationprix" placeholder="Prix" value="{{produitLocation[0].prix}}">
+				</div>
+				<div class="col-start-9 col-end-12 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="locationcaution">Caution:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" name="locationcaution" id="locationcaution" placeholder="Caution" value="{{produitLocation[0].caution}}">
+				</div>
+			</div>
+			<div class="w-full text-right mt-[40px]">
+				<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" name="envoie" id="envoie" type="submit">
+					Envoyer
+				</button>
+			</div>
+		</form>
+		{% else %}
+		<form action="{{ path('gestion_produit') }}" method="post" id="formulaire">
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6">
+				<div class="col-start-3 col-end-6 w-full m-auto px-6 py-7 text-left ">
+					<label class="" for="nom">Nom:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="nom" id="nom" placeholder="Nom" value="">
+				</div>
+				<div class="col-start-7 col-end-10 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="marque">Marque:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="marque" id="marque" placeholder="Marque" value="">
+				</div>
+			</div>
+			<div class="w-full text-left">
+				<label class="" for="description">Description:</label>
+				<textarea class="mb-[1.75rem] shadow appearance-none border rounded w-full min-h-[245px] max-h-[245px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="description" id="description"></textarea>
+				<label class="" for="img">Image:</label>
+				<input class="mb-[1.75rem] shadow appearance-none border rounded w-[98%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="img" id="img" placeholder="image" value="">
+				<label class="" for="img1">Image 1:</label>
+				<input class="mb-[1.75rem] shadow appearance-none border rounded w-[98%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="img1" id="img1" placeholder="image 1" value="">
+				<label class="" for="img2">Image 2:</label>
+				<input class="mb-[1.75rem] shadow appearance-none border rounded w-[98%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="img2" id="img2" placeholder="image 2" value="">
+				<label class="" for="img3">Image 3:</label>
+				<input class="mb-[1.75rem] shadow appearance-none border rounded w-[98%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="img3" id="img3" placeholder="image 3" value="">
+				<label class="" for="img4">Image 4:</label>
+				<input class="mb-[1.75rem] shadow appearance-none border rounded w-[98%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="img4" id="img4" placeholder="image 4" value="">
+				<div class="flex justify-center">
+					<div class="mb-3 xl:w-96">
+						<select name="categorie" id="categorie" class="form-select appearance-none
+							      block
+							      w-full
+							      px-3
+							      py-1.5
+							      text-base
+							      font-normal
+							      text-gray-700
+							      bg-white bg-clip-padding bg-no-repeat
+							      border border-solid border-gray-300
+							      rounded
+							      transition
+							      ease-in-out
+							      m-0
+							      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" aria-label="Default select example">
+							<option value="" selected>Selectionner une catégorie</option>
+							{% for select in categorie|sort %}
+								<option value="{{select.id}}">{{select.nom}}
+									/
+									{{select.terc}}</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6">
+				<div class="col-start-1 col-end-4 w-full m-auto px-6 py-7  text-left">
+					<label class="" for="datepromo">Date Fin Promotion:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" name="datepromo" id="datepromo" placeholder="Date Fin Promotion" value="">
+				</div>
+				<div class="col-start-5 col-end-8 w-full m-auto px-6 py-7  text-left">
+					<label class="" for="datephare">Date Fin Produit Phare:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="date" name="datephare" id="datephare" placeholder="Date Produit Phare" value="">
+				</div>
+				<div class="col-start-9 col-end-12 w-full m-auto px-6 py-7  text-left">
+					<label class="" for="promo">Taux en % de la promotion:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" name="promo" id="promo" placeholder="Promotion" value="">
+				</div>
+			</div>
+			<h2 class="text-left ml-[10px] mt-[40px]">Achat :</h2>
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6">
+				<div class="col-start-1 col-end-4 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="achatqt">Quantite:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" name="achatqt" id="achatqt" placeholder="Quantite" value="">
+				</div>
+				<div class="col-start-5 col-end-8 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="achatprix">Prix:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" step="0.01" name="achatprix" id="achatprix" placeholder="Prix" value="">
+				</div>
+			</div>
+			<h2 class="text-left ml-[10px] mt-[40px]">Occassion :</h2>
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6">
+				<div class="col-start-1 col-end-4 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="occassionqt">Quantite:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" name="occassionqt" id="occassionqt" placeholder="Quantite" value="">
+				</div>
+				<div class="col-start-5 col-end-8 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="occassionprix">Prix:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" step="0.01" name="occassionprix" id="occassionprix" placeholder="Prix" value="">
+				</div>
+			</div>
+			<h2 class="text-left ml-[10px] mt-[40px]">Location :</h2>
+			<div class="grid gap-4 grid-cols-11 sm:grid-cols-11 lg:grid-cols-11 xl:grid-cols-11 mt-6">
+				<div class="col-start-1 col-end-4 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="locationqt">Quantite:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" name="locationqt" id="locationqt" placeholder="Quantite" value="">
+				</div>
+				<div class="col-start-5 col-end-8 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="locationprix">Prix:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" step="0.01" name="locationprix" id="locationprix" placeholder="Prix" value="">
+				</div>
+				<div class="col-start-9 col-end-12 w-full m-auto px-6 py-7 text-left">
+					<label class="" for="locationcaution">Caution:</label>
+					<input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" name="locationcaution" id="locationcaution" placeholder="Caution" value="">
+				</div>
+			</div>
+			<div class="w-full text-right mt-[40px]">
+				<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" name="envoie" id="envoie" type="submit">
+					Envoyer
+				</button>
+			</div>
+		</form>
+		{% endif %}
+		
+	</main>
+{% endblock %}
+{% block javascripts %}
+	{{ encore_entry_script_tags('nav') }}
+	{{ encore_entry_script_tags('gestionproduit') }}
+{% endblock %}

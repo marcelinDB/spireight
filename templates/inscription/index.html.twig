@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block connexion %}
+  {% if statusConnexion == true %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Connexion</p>
+		</a>
+  {% else %}
+    <a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Compte</p>
+		</a>
+  {% endif %}
+{% endblock %}
+
+{% block menu %}<script>var menuArray = JSON.parse({{menuJs|json_encode()|raw}})</script>{% endblock %}
+
+{% block body %}
+<main>
+<script>var message = String("{{message}}")</script>
+<h1 class="title mt-[80px] mb-10">Inscription</h1>
+<p class="text-left  mx-[20px]"><a href="{{ path('app_home') }}">Accueil</a> > <a href="{{ path('connexion') }}">Connexion</a> > <a href="{{ path('inscription') }}">Inscription</a></p>
+<div class=" max-w-full text-left flex mt-[70px]">
+  <form id="formulaire" class="shadow-md rounded px-8 pt-6 pb-8 mb-4 m-auto w-[500px]" action="{{ path('inscription') }}" method="POST">
+    <div class="mb-4 bg-white flex flex-wrap -mx-3">
+        <div class="mb-4 bg-white md:w-1/2 px-3">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="nom">
+                Nom
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="nom" name="nom" type="text" placeholder="Nom">
+        </div>
+        <div class="mb-4 bg-white md:w-1/2 px-3">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="prenom">
+                Prénom
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="prenom" name="prenom" type="text" placeholder="Prénom">
+        </div>
+    </div>
+    <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="mdp">
+        Mot de passe
+      </label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="mdp" name="mdp" type="password" placeholder="******************">
+    </div>
+    <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="confmdp">
+        Confirmation du Mot de Passe
+      </label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="confmdp" name="confmdp" type="password" placeholder="******************">
+    </div>
+    <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="societe">
+        Nom de société (Facultatif)
+      </label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="societe" name="societe" type="text" placeholder="Société">
+    </div>
+    <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+        Email
+      </label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="email" name="email" type="email" placeholder="******************">
+    </div>
+    <div class="mb-6">
+      <div class="w-full">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="dateNais">
+        Date de naissance
+      </label>
+      <input class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-2 px-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="date" name="date" type="date" placeholder="">
+    </div>
+    </div>
+    <div class="mb-6">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="tel">
+        Téléphone
+      </label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="tel" name="tel" type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" placeholder="******************">
+    </div>
+    <div class="mb-6">
+        <textarea id="erreur" disabled class="text-red-700 bg-white shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline min-h-[200px] max-h-[200px] hidden">
+        </textarea>
+    </div>
+    <div class="flex items-center justify-between">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" name="envoie" id="envoie" type="submit">
+        Valider
+      </button>
+    </div>
+  </form>
+</div>
+
+</main>
+{% endblock %}
+{% block javascripts %}
+	{{ encore_entry_script_tags('nav') }}
+	{{ encore_entry_script_tags('inscription') }}
+{% endblock %}
