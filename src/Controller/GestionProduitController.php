@@ -41,12 +41,12 @@ class GestionProduitController extends AbstractController
             $statusConnexion = true;
         }else{
             if($session->get('id') != 11 && $session->get('id') != 13){
-                echo "<script>window.location.replace('./profil');</script>";
+                return $this->redirectToRoute('profil');
             }
             $statusConnexion = false;
         }
         if(!$session->has('email')){
-            echo "<script>window.location.replace('./connexion');</script>";
+            return $this->redirectToRoute('connexion');
         }
 
         if(isset($_GET['idproduct'])){
@@ -98,7 +98,7 @@ class GestionProduitController extends AbstractController
                 if(isset($_POST['locationqt'])){
                     $this->setStock($doctrine,$this->key,1,$_POST['locationqt'],$_POST['locationprix'],$_POST['locationcaution']);
                 }
-                echo "<script>window.location.replace('./gestion_produit?idproduct='".$this->key.");</script>";
+                return $this->redirectToRoute('gestion_produit',['idproduct'=>$this->key]);
             }else{
                 $this->setUpdateProduit($doctrine,$_GET['idproduct']);
                 $this->setUpdatePromo($doctrine,$_GET['idproduct'],$_POST['promo'],$_POST['datepromo']);

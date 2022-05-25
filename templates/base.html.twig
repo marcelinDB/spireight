@@ -80,12 +80,12 @@ clifford: '#da373d'
 
 			<nav id="nav" class="container min-w-full">
 				<div id="navLink" class="drop-shadow-md bg-white w-[100%] space-x-2 flex justify-center">
-					<a href="{{ path('categorie', {'categorie': 1 }) }}" id="audio" class="fromLeft uppercase p-4">Audio</a>
-					<a href="{{ path('categorie', {'categorie': 2 }) }}" id="eclairage" class="fromLeft uppercase p-4">Eclairage</a>
-					<a href="{{ path('categorie', {'categorie': 3 }) }}" id="video" class="fromLeft uppercase p-4">Vidéo</a>
-					<a href="{{ path('categorie', {'categorie': 4 }) }}" id="mobilier" class="fromLeft uppercase p-4">Mobilier</a>
-					<a href="{{ path('categorie', {'categorie': 5 }) }}" id="structure" class="fromLeft uppercase p-4">Autres</a>
-					<a href="{{ path('categorie', {'categorie': 6 }) }}" id="packs" class="fromLeft uppercase p-4">Packs</a>
+					<a href="{{ path('categorie_content', {'categorie': 1 }) }}" id="audio" class="fromLeft uppercase p-4">Audio</a>
+					<a href="{{ path('categorie_content', {'categorie': 2 }) }}" id="eclairage" class="fromLeft uppercase p-4">Eclairage</a>
+					<a href="{{ path('categorie_content', {'categorie': 3 }) }}" id="video" class="fromLeft uppercase p-4">Vidéo</a>
+					<a href="{{ path('categorie_content', {'categorie': 4 }) }}" id="mobilier" class="fromLeft uppercase p-4">Mobilier</a>
+					<a href="{{ path('categorie_content', {'categorie': 5 }) }}" id="structure" class="fromLeft uppercase p-4">Autres</a>
+					<a href="{{ path('categorie_content', {'categorie': 6 }) }}" id="packs" class="fromLeft uppercase p-4">Packs</a>
 				</div>
 				<div id="dropmenu" class="drop-shadow-md bg-white grid grid-cols-11 gap-4 h-auto w-[100%]" style=""></div>
 			</nav>
@@ -150,22 +150,22 @@ clifford: '#da373d'
 				</h2>
 				<ul class="mb-8 space-y-2 text-sm list-none">
 					<li>
-						<a href="{{ path('categorie',{categorie: 1}) }}" class="text-gray-900 hover:text-blue-900">Audio</a>
+						<a href="{{ path('categorie_content',{categorie: 1}) }}" class="text-gray-900 hover:text-blue-900">Audio</a>
 					</li>
 					<li>
-						<a href="{{ path('categorie',{categorie: 2}) }}" class="text-gray-900 hover:text-blue-900">Eclairage</a> </li> 
+						<a href="{{ path('categorie_content',{categorie: 2}) }}" class="text-gray-900 hover:text-blue-900">Eclairage</a> </li> 
 					</li>
 					<li> 
-						<a href="{{ path('categorie',{categorie: 3}) }}" class="text-gray-900 hover:text-blue-900" >Vidéo </a>
+						<a href="{{ path('categorie_content',{categorie: 3}) }}" class="text-gray-900 hover:text-blue-900" >Vidéo </a>
 					</li>
 					<li>
-						<a href="{{ path('categorie',{categorie: 4}) }}" class="text-gray-900 hover:text-blue-900">Mobilier</a>
+						<a href="{{ path('categorie_content',{categorie: 4}) }}" class="text-gray-900 hover:text-blue-900">Mobilier</a>
 					</li>
 					<li>
-						<a href="{{ path('categorie',{categorie: 5}) }}" class="text-gray-900 hover:text-blue-900">Autres</a>
+						<a href="{{ path('categorie_content',{categorie: 5}) }}" class="text-gray-900 hover:text-blue-900">Autres</a>
 					</li>
 					<li>
-						<a href="{{ path('categorie',{categorie: 6}) }}" class="text-gray-900 hover:text-blue-900">Packs</a>
+						<a href="{{ path('categorie_content',{categorie: 6}) }}" class="text-gray-900 hover:text-blue-900">Packs</a>
 					</li>
 				</ul>
 			</div>

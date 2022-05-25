@@ -1,6 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CgvController!{% endblock %}
+{% block title %}CGV{% endblock %}
+
+{% block connexion %}
+  {% if statusConnexion == true %}
+		<a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Connexion</p>
+		</a>
+  {% else %}
+    <a href="{{ path('connexion') }}" class="grid grid-cols-1 gap-0 w-auto mr-5 h-[100%] min-w-[60px]">
+			<i class="fa fa-user-circle relative mx-auto text-3xl text-blue-700 mt-[10px]" aria-hidden="true"></i>
+			<p class="mx-auto">Compte</p>
+		</a>
+  {% endif %}
+{% endblock %}
 
 {% block body %}
 <style>

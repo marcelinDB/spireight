@@ -166,7 +166,7 @@
 							{% endif %}
 						{% endfor %}
 						{% if quantite > 0 %}
-							<form class="grid gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 mt-6 absolute inset-x-0 bottom-10" action="{{ path('article',{'id': articleInfo[0].idProduit.id}) }}" method="post">
+							<form class="grid gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 mt-6 absolute inset-x-0 bottom-10" action="{{ path('article_content',{'id': articleInfo[0].idProduit.id}) }}" method="post">
 								{% if louer == 1 %}
 									<input class="h-10 px-5 m-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800 click text-xl" type="submit" name="louer" id="{{articleInfo[0].idProduit.id}}" value="Louer">
 									<input class="h-10 px-5 m-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800 click text-xl disable hidden" type="text" name="location" value="{{location}}">

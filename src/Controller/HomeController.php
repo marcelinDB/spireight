@@ -18,6 +18,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use App\Controller\MenuController;
 
+use App\Controller\MailerController;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,11 +29,16 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class HomeController extends AbstractController
 {
+    public function __construct(
+        RequestStack $requestStack
+    ){
+        $this->requestStack = $requestStack;
+    }
+
     #[Route('/', name: 'app_home')]
-    public function index(EntityManagerInterface $em,RequestStack $requestStack): Response
+    public function index(EntityManagerInterface $em): Response
     {
         $menu = new MenuController($em);
-        $this->requestStack = $requestStack;
         $session = $this->requestStack->getCurrentRequest()->getSession();
         if(!$session->has('email')){
             $statusConnexion = true;
@@ -58,6 +65,58 @@ class HomeController extends AbstractController
             'promotionList' => $promotionList,
             'statusConnexion' => $statusConnexion,
             'menuJs' => $menu->getJson()
+        ]);
+    }
+
+    #[Route('/contact', name: 'contact')]
+    public function contact(EntityManagerInterface $em,MailerInterface $mailer): Response
+    {    
+        $menu = new MenuController($em);
+        $mailerC = new MailerController();
+        $session = $this->requestStack->getCurrentRequest()->getSession();
+        $statusConnexion = false;
+        if(isset($_POST['email'])){
+            try {
+                $mailerC->sendEmail($mailer, "Envoi d'un formulaire de contact",$_POST['email'],"<h1>Nous vous remercions de l'envoi de ce formulaire de contact</h1><p>Vous devriez recevoir une réponse dans les prochaines 48 heures.</p>");
+                $mailerC->sendEmail($mailer, "Formulaire de contact","contact@pixel4d.fr","<h1>Forumlaire de contact à propos de: ".$_POST['sujet']."</h1><p>De la part de ".$_POST['email']."</p>"."<p>Tel: ".$_POST['tel']."</p>"."<p>".$_POST['message']."</p>");
+            } catch (\Throwable $th) {
+                print $th;
+            }    
+        }
+        return $this->render('home/contact.html.twig', [
+            'controller_name' => 'ContactController',
+            'statusConnexion' => $statusConnexion,
+            'menuJs' => $menu->getJson()
+        ]);
+    }
+
+    #[Route('/cgu', name: 'cgu')]
+    public function cgu(): Response
+    {
+        $session = $this->requestStack->getCurrentRequest()->getSession();
+        if(!$session->has('email')){
+            $statusConnexion = true;
+        }else{
+            $statusConnexion = false;
+        }
+        return $this->render('home/cgu.html.twig', [
+            'controller_name' => 'CguController',
+            'statusConnexion' => $statusConnexion
+        ]);
+    }
+
+    #[Route('/cgv', name: 'cgv')]
+    public function cgv(): Response
+    {
+        $session = $this->requestStack->getCurrentRequest()->getSession();
+        if(!$session->has('email')){
+            $statusConnexion = true;
+        }else{
+            $statusConnexion = false;
+        }
+        return $this->render('home/cgv.html.twig', [
+            'controller_name' => 'CgvController',
+            'statusConnexion' => $statusConnexion
         ]);
     }
 

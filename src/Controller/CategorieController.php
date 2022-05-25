@@ -18,7 +18,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class CategorieController extends AbstractController
 {
     #[Route('/categorie', name: 'categorie')]
-    public function index(EntityManagerInterface $em,RequestStack $requestStack): Response
+    public function index(): Response
+    {
+        return $this->redirectToRoute('app_home');
+    }
+
+    #[Route('/categorie/{categorie}', name: 'categorie_content')]
+    public function category(EntityManagerInterface $em,RequestStack $requestStack,$categorie): Response
     {
         $menu = new MenuController($em);
         $this->requestStack = $requestStack;
@@ -29,12 +35,8 @@ class CategorieController extends AbstractController
             $statusConnexion = false;
         }
         $response_available = false;
-        if(isset($_GET['categorie'])){
-            $categorie = $this->getCategorie($em);
-            $response_available = true;
-        }else{
-            echo "<script>window.location.replace('./');</script>";
-        }
+        $categorie = $this->getCategorie($em,$categorie);
+        $response_available = true;
         return $this->render('categorie/index.html.twig', [
             'controller_name' => 'CategorieController',
             'response_available' => $response_available,
@@ -45,8 +47,8 @@ class CategorieController extends AbstractController
         ]);
     }
 
-    public function getCategorie($em):array
+    public function getCategorie($em,$id):array
     {
-        return $em->getRepository(CategorieSecondaire::class)->findByIdPrimaryCategorie($_GET['categorie']);
+        return $em->getRepository(CategorieSecondaire::class)->findByIdPrimaryCategorie($id);
     }
 }

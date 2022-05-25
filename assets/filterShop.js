@@ -592,7 +592,7 @@ async function listProduct(table) {
 
 async function addElement(id, nom, img, promoHtml, ruptureHtml, displayPriceFinal, nouveauHtml) {
   content = document.createElement("a")
-  content.innerHTML = `<a href="./article?id=${id}">
+  content.innerHTML = `<a href="./article/${id}">
         <div class="w-full max-w-sm mx-auto shadow-md overflow-hidden">
           <div class="flex items-end justify-end h-56 w-full bg-cover" style="background-image: url(${img})">
             <div class="inline-flex justify-self-stretch">
@@ -617,7 +617,7 @@ async function addElement(id, nom, img, promoHtml, ruptureHtml, displayPriceFina
 
 async function addElementFiltrer(id, nom, img, promoHtml, ruptureHtml, displayPriceFinal, nouveauHtml) {
   content = document.createElement("a")
-  content.innerHTML = `<a href="./article?id=${id}">
+  content.innerHTML = `<a href="./article/${id}">
         <div class="w-full max-w-sm mx-auto shadow-md overflow-hidden">
           <div class="flex items-end justify-end h-56 w-full bg-cover" style="background-image: url(${img})">
             <div class="inline-flex justify-self-stretch">

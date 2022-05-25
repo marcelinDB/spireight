@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Produit;
@@ -24,6 +23,7 @@ use App\Controller\MenuController;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -32,7 +32,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class ArticleController extends AbstractController
 {
     #[Route('/article', name: 'article')]
-    public function index(EntityManagerInterface $em,RequestStack $requestStack,ManagerRegistry $doctrine): Response
+    public function article(): Response
+    {
+        return $this->redirectToRoute('boutique');
+    }
+    #[Route('/article/{id}', name: 'article_content', methods: ['GET','POST'])]
+    public function index(EntityManagerInterface $em,RequestStack $requestStack,ManagerRegistry $doctrine,Request $request,$id): Response
     {
         $menu = new MenuController($em);
         $this->requestStack = $requestStack;
@@ -44,29 +49,28 @@ class ArticleController extends AbstractController
         }
         $response_available = false;
         $articleInfo = [];
-        if(isset($_GET['id'])){
-                
-            if(isset($_POST['louer'])){
-                $this->setPanier($doctrine,$_POST['location'],$session,1);
-                echo "<script>window.location.replace('./panier');</script>";
+        if(isset($id)){
+            $louer = $request->request->get('louer');
+            $acheter = $request->request->get('acheter');
+            if(isset($louer)){
+                $this->setPanier($doctrine,$request->request->get('location'),$session,1);
+                return $this->redirectToRoute('panier');
             }
-            if(isset($_POST['acheter'])){
-                $this->setPanier($doctrine,$_POST['achat'],$session,0);
-                echo "<script>window.location.replace('./panier');</script>";
+            if(isset($acheter)){
+                $this->setPanier($doctrine,$request->request->get('achat'),$session,0);
+                return $this->redirectToRoute('panier');
             }
             $response_available = true;
-            $articleInfo = $this->getArticle($em);
+            $articleInfo = $this->getArticle($em,$id);
             try {
                 $similary = $this->getRandomProduct($em,$articleInfo);
             } catch (\Throwable $th) {
-                echo "<script>window.location.replace('./boutique');</script>";
+                return $this->redirectToRoute('boutique');
             }
             try {
                 shuffle($similary);
-            } catch (\Throwable $th) {
-                //throw $th;
-            }
-            $promo = $this->getPromo($em);
+            } catch (\Throwable $th) {}
+            $promo = $this->getPromo($em,$id);
             $articleInfoGestion = [];
         }
         
@@ -83,9 +87,9 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    public function getArticle($em)
+    public function getArticle($em,$id)
     {
-        return $em->getRepository(Gestionstock::class)->findByProductInfo($_GET['id']);
+        return $em->getRepository(Gestionstock::class)->findByProductInfo($id);
     }
 
     public function getPack($em)
@@ -93,9 +97,9 @@ class ArticleController extends AbstractController
         return $em->getRepository(Liaison::class)->findById($_GET['pack']);
     }
 
-    public function getPromo($em)
+    public function getPromo($em,$id)
     {
-        return $em->getRepository(Promotion::class)->findByid($_GET['id']);
+        return $em->getRepository(Promotion::class)->findByid($id);
     }
 
     public function getRandomProduct($em,$articleInfo)

@@ -40,7 +40,7 @@ class PanierController extends AbstractController
         $session = $this->requestStack->getCurrentRequest()->getSession();
         if(!$session->has('email')){
             $statusConnexion = true;
-            echo "<script>window.location.replace('./connexion');</script>";
+            return $this->redirectToRoute('connexion');
         }else{
             $statusConnexion = false;
         }
@@ -57,13 +57,14 @@ class PanierController extends AbstractController
                 $this->setDevis($doctrine,$_POST['id'][$y],$session,$mailerC,$mailer);
                 $this->setCommande($doctrine,$_POST['id'][$y],$_POST['date'][$y]);
             }
-            //echo "<script>window.location.replace('./listdevis');</script>";
+            return $this->redirectToRoute('list_devis');
+            
         }
         $articleInfo = $this->getArticle($em);
             try {
                 $similary = $this->getRandomProduct($em,$articleInfo);
             } catch (\Throwable $th) {
-               //echo "<script>window.location.replace('./boutique');</script>";
+                return $this->redirectToRoute('boutique');
             }
             try {
                 shuffle($similary);
